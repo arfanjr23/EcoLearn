@@ -1210,6 +1210,25 @@ function initBackToTop() {
 /* =========================================================================
    RIVER DEFENDER GAME ENGINE
    ========================================================================= */
+
+// Polyfill for ctx.roundRect (not supported in older browsers)
+if (typeof CanvasRenderingContext2D !== 'undefined' && !CanvasRenderingContext2D.prototype.roundRect) {
+    CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, radii) {
+        let r = typeof radii === 'number' ? radii : (Array.isArray(radii) ? radii[0] : 0);
+        r = Math.min(r, w / 2, h / 2);
+        this.moveTo(x + r, y);
+        this.lineTo(x + w - r, y);
+        this.arcTo(x + w, y, x + w, y + r, r);
+        this.lineTo(x + w, y + h - r);
+        this.arcTo(x + w, y + h, x + w - r, y + h, r);
+        this.lineTo(x + r, y + h);
+        this.arcTo(x, y + h, x, y + h - r, r);
+        this.lineTo(x, y + r);
+        this.arcTo(x, y, x + r, y, r);
+        return this;
+    };
+}
+
 let riverScore = 0;
 let riverLives = 3;
 let riverHighScore = 0;
@@ -1401,6 +1420,32 @@ function updateRiverLivesUI() {
     }
 }
 
+function showRiverScreen(screenId) {
+    const startScreen = document.getElementById('screen-river-start');
+    const gameoverScreen = document.getElementById('screen-river-gameover');
+    
+    if (startScreen) {
+        startScreen.style.display = (screenId === 'start') ? 'flex' : 'none';
+        startScreen.style.opacity = (screenId === 'start') ? '1' : '0';
+        startScreen.style.pointerEvents = (screenId === 'start') ? 'auto' : 'none';
+    }
+    if (gameoverScreen) {
+        gameoverScreen.style.display = (screenId === 'gameover') ? 'flex' : 'none';
+        gameoverScreen.style.opacity = (screenId === 'gameover') ? '1' : '0';
+        gameoverScreen.style.pointerEvents = (screenId === 'gameover') ? 'auto' : 'none';
+    }
+}
+
+function resizeRiverCanvas() {
+    const canvas = document.getElementById('river-canvas');
+    const container = document.getElementById('river-play-area');
+    if (!canvas || !container) return;
+    
+    // Keep canvas drawing resolution at 600x520 but ensure CSS fills container
+    canvas.style.width = '100%';
+    canvas.style.height = '100%';
+}
+
 function startRiverGame() {
     riverScore = 0;
     riverLives = 3;
@@ -1416,8 +1461,11 @@ function startRiverGame() {
     document.getElementById('river-score').textContent = '0';
     updateRiverLivesUI();
 
-    document.getElementById('screen-river-start').style.display = 'none';
-    document.getElementById('screen-river-gameover').style.display = 'none';
+    // Hide all overlay screens - show only the canvas
+    showRiverScreen('playing');
+    
+    // Ensure canvas is properly sized
+    resizeRiverCanvas();
 
     updateRiverLiloImage();
     playRiverSound('start');
@@ -1455,7 +1503,11 @@ function endRiverGame() {
     document.getElementById('river-xp-reward').textContent = xpReward.toString();
     document.getElementById('river-coins-reward').textContent = coinsReward.toString();
 
-    document.getElementById('screen-river-gameover').style.display = 'flex';
+    // Draw one final frame so the game background is visible behind gameover
+    drawRiverGame();
+    
+    // Show the gameover screen
+    showRiverScreen('gameover');
 }
 
 function updateRiverGame(timestamp) {
@@ -1907,6 +1959,9 @@ function initRiverDefender() {
     // Setup static riverbank decorations
     initRiverDecorations();
 
+    // Draw initial background on canvas so it's not blank
+    drawRiverGame();
+
     // Event listeners for controlling jaring (Net)
     canvas.addEventListener('mousemove', (e) => {
         if (!isRiverActive) return;
@@ -1927,15 +1982,29 @@ function initRiverDefender() {
         }
     }, { passive: false });
 
+    // Also handle mouse click/tap to move the net (for users who might click instead of drag)
+    canvas.addEventListener('click', (e) => {
+        if (!isRiverActive) return;
+        const rect = canvas.getBoundingClientRect();
+        const canvasX = (e.clientX - rect.left) * (canvas.width / rect.width);
+        riverTargetNetX = Math.max(135, Math.min(465, canvasX));
+    });
+
     // Buttons
     const btnStart = document.getElementById('btn-start-river');
     const btnRestart = document.getElementById('btn-restart-river');
 
     if (btnStart) {
-        btnStart.addEventListener('click', startRiverGame);
+        btnStart.addEventListener('click', (e) => {
+            e.stopPropagation();
+            startRiverGame();
+        });
     }
     if (btnRestart) {
-        btnRestart.addEventListener('click', startRiverGame);
+        btnRestart.addEventListener('click', (e) => {
+            e.stopPropagation();
+            startRiverGame();
+        });
     }
 }
 
@@ -2004,10 +2073,15 @@ function launchArcadeGame(gameType) {
         if (river) river.style.display = 'block';
         if (iconEl) iconEl.textContent = '🕸️';
         if (titleEl) titleEl.textContent = 'Penyelamat Sungai';
-        const riverStart = document.getElementById('screen-river-start');
-        const riverOver = document.getElementById('screen-river-gameover');
-        if (riverStart) riverStart.style.display = 'flex';
-        if (riverOver) riverOver.style.display = 'none';
+        // Reset river game state and show start screen
+        isRiverActive = false;
+        if (riverAnimId) cancelAnimationFrame(riverAnimId);
+        riverTrash = [];
+        riverParticles = [];
+        showRiverScreen('start');
+        // Draw initial background on canvas so it's not blank behind overlay
+        resizeRiverCanvas();
+        drawRiverGame();
     } else if (gameType === 'quiz') {
         if (quiz) quiz.style.display = 'block';
         if (iconEl) iconEl.textContent = '💡';
@@ -2038,14 +2112,27 @@ function exitArcade() {
 }
 
 function stopAllGames() {
+    // Stop trash sorting game
     isGameActive = false;
-    if (typeof gameInterval !== 'undefined' && gameInterval) clearInterval(gameInterval);
-    if (typeof gameAnimId !== 'undefined' && gameAnimId) cancelAnimationFrame(gameAnimId);
+    if (typeof gameInterval !== 'undefined' && gameInterval) {
+        clearInterval(gameInterval);
+        gameInterval = null;
+    }
+    if (typeof gameAnimId !== 'undefined' && gameAnimId) {
+        cancelAnimationFrame(gameAnimId);
+        gameAnimId = null;
+    }
     const canvasArea = document.getElementById('game-canvas-area');
     if (canvasArea) canvasArea.innerHTML = '';
     
+    // Stop river defender game
     isRiverActive = false;
-    if (typeof riverAnimId !== 'undefined' && riverAnimId) cancelAnimationFrame(riverAnimId);
+    if (typeof riverAnimId !== 'undefined' && riverAnimId) {
+        cancelAnimationFrame(riverAnimId);
+        riverAnimId = null;
+    }
+    riverTrash = [];
+    riverParticles = [];
 }
 
 // Make them globally available

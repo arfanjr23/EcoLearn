@@ -299,7 +299,7 @@
                                     <canvas id="river-canvas" width="600" height="520" style="display: block; width: 100%; height: 100%; image-rendering: auto;"></canvas>
 
                                     <!-- Start Screen -->
-                                    <div class="game-screen active" id="screen-river-start" style="position: absolute; inset: 0; background: rgba(240, 253, 244, 0.95); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 2rem; z-index: 10; transition: opacity 0.3s ease;">
+                                    <div id="screen-river-start" style="position: absolute; inset: 0; background: rgba(240, 253, 244, 0.95); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 2rem; z-index: 10; transition: opacity 0.3s ease;">
                                         <div style="font-size: 4rem; margin-bottom: 0.5rem; animation: float 3s ease-in-out infinite;">🕸️</div>
                                         <h3 style="font-family: var(--font-outfit); font-size: 1.8rem; font-weight: 800; color: var(--text-dark); margin-bottom: 0.5rem;">Penyelamat Sungai</h3>
                                         <p style="font-size: 0.95rem; color: var(--text-muted); max-width: 450px; margin-bottom: 1.5rem; line-height: 1.5;">
@@ -314,7 +314,7 @@
                                     </div>
 
                                     <!-- Game Over Screen -->
-                                    <div class="game-screen" id="screen-river-gameover" style="position: absolute; inset: 0; background: rgba(254, 242, 242, 0.95); display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 2rem; z-index: 10; transition: opacity 0.3s ease;">
+                                    <div id="screen-river-gameover" style="position: absolute; inset: 0; background: rgba(254, 242, 242, 0.95); display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 2rem; z-index: 10; transition: opacity 0.3s ease;">
                                         <div class="win-icon" style="background:#ffeaea; border-color:#ee5253; width: 80px; height: 80px; font-size: 2.5rem; display: flex; align-items: center; justify-content: center; border-radius: 50%; border: 3px dashed #ee5253; margin-bottom: 1rem; margin-top: 0;">💥</div>
                                         <h3 class="game-win-title" style="color:#ee5253; font-family: var(--font-outfit); font-size: 1.8rem; font-weight: 800; margin-bottom: 0.5rem; border: none; background: none; padding: 0;">Sungai Tercemar!</h3>
                                         <p class="game-win-desc" style="font-size: 1rem; color: var(--text-muted); max-width: 450px; margin-bottom: 1rem;">
