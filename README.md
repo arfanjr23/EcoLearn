@@ -1,67 +1,97 @@
-# 🌿 EcoLearn - Petualangan Merawat Lingkungan!
+# 🌿 EcoLearn - Petualangan Belajar & Merawat Lingkungan!
 
-**EcoLearn** adalah platform belajar memilah sampah dan merawat lingkungan yang seru, interaktif, dan ramah anak. Dengan visual bertema kartun cerah dan maskot Lilo yang menggemaskan, platform ini bertujuan menumbuhkan kesadaran lingkungan anak-anak sejak dini.
-
----
-
-## 🎮 Fitur & Modul Permainan
-
-### 1. Misi Pemilahan Sampah (Trash Sorting)
-Pemain membantu Lilo memilah sampah ke dalam 5 tong sampah berkode warna:
-- 🟢 **Organik**
-- 🔵 **Plastik**
-- 🟡 **Logam**
-- ⚪ **Kertas**
-- 🔴 **B3 (Bahan Berbahaya & Beracun)**
-
-Pemain menyeret (*drag-and-drop*) sampah yang jatuh ke tempat sampah yang sesuai. Terdapat 5 level tantangan dengan kecepatan meningkat serta sampah kembar/kemiripan untuk melatih fokus.
-
-### 2. Penyelamat Sungai (River Defender) 🕸️ *(BARU)*
-Misi penyelamatan perairan dari sampah yang mengalir terbawa arus sungai menuju laut lepas!
-- **Gameplay**: Sampah (botol plastik, kantong belanja plastik, kaleng soda) hanyut dari hulu sungai (atas) ke hilir (bawah).
-- **Controls**: Menggerakkan jaring penangkap jaring dengan mouse atau touch (sentuh layar).
-- **Mechanics**:
-  - Tangkap setiap sampah sebelum menembus batas muara dan mencemari laut.
-  - Setiap sampah yang lolos mengurangi **Nyawa (HP)**.
-  - Setiap sampah yang berhasil ditangkap menambah skor.
-  - Permainan berakhir (*Game Over*) ketika Nyawa mencapai 0.
-- **Rewards**: Skor akhir akan dikonversi menjadi **XP** (+10 XP per sampah) dan **Koin** (+5 Koin per sampah) secara instan, terhubung langsung dengan sistem profil global.
-- **Aesthetic**: Canvas 600x520 yang mulus, riak air sungai yang mengalir dinamis, bunga & semak kartun yang indah, perahu kayu jaring yang merespons gerak cursor dengan halus (*lerp physics*), maskot Lilo memakai kostum aktif di dalam perahu, serta musik & sound effects 8-bit retro yang ramah lingkungan.
-
-### 3. Lemari Baju Lilo (Wardrobe Shop)
-Pemain bisa menggunakan koin yang didapatkan dari game untuk membelikan aksesoris/kostum keren untuk Lilo:
-- 🥬 **Lilo Daun Asli** (Default - Gratis)
-- 🧑‍🍳 **Lilo Koki** (30 Koin)
-- 👨‍🚀 **Lilo Astronaut** (60 Koin)
-- 👑 **Lilo Raja** (100 Koin)
-
-Kostum yang sedang dipakai oleh Lilo akan secara otomatis tampil di seluruh platform, termasuk saat Lilo mendayung perahu di game **River Defender**!
-
-### 4. Kuis Pahlawan Lingkungan (Quiz Engine)
-Menguji pemahaman tentang lingkungan hidup lewat 5 teka-teki interaktif berhadiah bonus XP & Koin.
-
-### 5. Galeri Lencana (Achievements)
-Catatan pencapaian yang diperoleh pemain, seperti *Pilah Pemula*, *Kolektor Koin*, *Ahli Organik*, *Pahlawan B3*, *Master Pemilah*, dan *Penyelamat Sempurna*.
+**EcoLearn** adalah platform edukasi interaktif ramah anak dan remaja untuk belajar memilah sampah, literasi lingkungan, serta merawat bumi. Melalui visual bertema kartun cerah, maskot **Lilo si Daun Penyelamat**, modul bacaan interaktif, mini-game 2D canvas, dan fitur gamifikasi (lencana, toko kostum, serta papan peringkat), platform ini bertujuan menumbuhkan kesadaran lingkungan sejak dini.
 
 ---
 
-## 🛠️ Tech Stack & Fitur Teknis
+## 📚 1. Pusat Literasi & Modul Belajar Interaktif
 
-- **Backend**: [Laravel 10](https://laravel.com/)
-- **Frontend Assets**: [Vite](https://vitejs.dev/) & Vanilla CSS / Javascript
-- **Game Engine**: HTML5 2D Canvas API (tanpa library pihak ketiga untuk memastikan performa maksimal & loading cepat)
-- **Sound Effects**: [Web Audio API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API) (menghasilkan bunyi retro secara sintetis langsung di browser tanpa butuh file audio eksternal)
-- **State Management**: Sinkronisasi state lokal pemain (XP, Koin, Kostum Aktif) via `localStorage` sehingga progress bermain tersimpan secara persisten.
+Modul bacaan edukatif interaktif yang didesain khusus untuk anak-anak dan remaja:
+
+- **6 Materi Pembelajaran**:
+  1. 🌱 *Seni Memilah Sampah*: Panduan 5 warna tong sampah dan pemilahan yang benar.
+  2. 🌊 *Perjalanan Plastik ke Laut*: Dampak pencemaran sungai dan ancaman microplastic.
+  3. ☢️ *Waspada Bahaya Sampah B3*: Pengenalan bahan berbahaya (baterai, obat-obatan, lampu).
+  4. ♻️ *Gaya Hidup Zero Waste*: Penerapan prinsip 5R (Refuse, Reduce, Reuse, Repurpose, Recycle).
+  5. 🥗 *Keajaiban Kompos Organik*: Cara mengolah sisa makanan menjadi pupuk subur.
+  6. 🌍 *Jejak Karbon & Perubahan Iklim*: Memahami pemanasan global dan aksi nyata pencegahannya.
+- **Fitur Pencarian & Filter**:
+  - 🔍 **Pencarian Real-Time**: Cari materi berdasarkan topik atau kata kunci.
+  - 🏷️ **Filter Kategori**: Pemilahan Sampah, Sungai & Laut, Zero Waste, Iklim & Bumi.
+  - 👶/🧑‍🎓 **Filter Target Usia**: Mode Anak-Anak (Kids) dan Remaja (Teens).
+- **Fitur Interactive Reader Modal**:
+  - 🔊 **Audio Reader (Text-to-Speech)**: Fitur pembaca suara berbahasa Indonesia (`SpeechSynthesis API`) untuk kemudahan aksesibilitas.
+  - 🔤 **Pengatur Ukuran Teks**: Tombol besarkan (`Aa+`) dan kecilkan (`Aa-`) font artikel.
+  - 🔖 **Sistem Bookmark**: Simpan materi favorit untuk dibaca kembali.
+  - 📊 **Progress Bar Membaca**: Penanda progres membaca berbasis guliran layar.
+  - 🍃 **Mascot Companion (Lilo)**: Memberikan saran dan tips konteksual saat membaca.
+  - ❓ **Kuis Refleksi Terintegrasi**: Kuis singkat di akhir setiap artikel untuk menguji pemahaman.
+  - 🎁 **Reward Membaca**: Mendapatkan **+30 XP** dan **+15 Koin** untuk setiap materi yang diselesaikan pertama kali.
 
 ---
 
-## 🚀 Menjalankan Project Secara Lokal
+## 👕 2. Lemari Baju Lilo (Wardrobe Shop)
+
+Pemain dapat menukarkan koin yang didapatkan dari game dan membaca untuk membeli kostum Lilo:
+- 🥬 **Lilo Daun Asli** (Gratis - Default)
+- 🧑‍🍳 **Lilo Koki** (30 Koin) — Dilengkapi topi koki putih
+- 👨‍🚀 **Lilo Astronaut** (60 Koin) — Dilengkapi helm kaca & kerah oksigen
+- 👑 **Lilo Raja** (100 Koin) — Dilengkapi mahkota emas berkilau
+
+**Render SVG Dinamis**: Kostum yang dipakai akan otomatis berubah secara realtime pada 7 lokasi UI (Hero, Profile Avatar, Header Quiz, Game Canvas River Defender, dll.).
+
+---
+
+## 🏆 3. Galeri Lencana (Achievements) & Papan Peringkat (Leaderboard)
+
+### Galeri Lencana Pahlawan 🏅
+Terdapat 6 lencana pencapaian yang dapat dibuka:
+- 🌱 **Pembaca Pemula**: Selesaikan 1 materi belajar.
+- 💰 **Kolektor Koin**: Kumpulkan minimal 50 koin.
+- 🥗 **Ahli Organik**: Selesaikan materi komposting/pemilahan organik.
+- 📚 **Kutu Buku Eco**: Selesaikan 3 materi belajar.
+- 👑 **Master EcoLearn**: Selesaikan semua 6 materi belajar.
+- ⚡ **Bintang Literasi**: Jawab kuis refleksi dengan benar.
+
+### Papan Peringkat Eco (Leaderboard) 📊
+- **Podium Juara (Top 3)**: Tampilan visual podium emas, perak, dan perunggu.
+- **Klasemen XP**: Peringkat pemain yang disandingkan secara dinamis dengan 8 bot kompetitor.
+- **User Rank Pill**: Menampilkan posisi peringkat pemain secara realtime (contoh: *Peringkat Kamu: #1 dari 9 Pahlawan*).
+
+---
+
+## 👤 4. Sistem Profil & Perkembangan Pemain
+
+- **HUD Stats Header**: Menampilkan jumlah **XP** (⭐) dan **Koin** (🪙) di bagian navigasi atas secara konstan.
+- **Gelar/Gelar Pahlawan**: Gelar pemain otomatis naik berdasarkan akumulasi XP:
+  - `0 - 49 XP`: Pahlawan Magang 🍃
+  - `50 - 149 XP`: Pilah Junior 🌱
+  - `150 - 299 XP`: Pelindung Lingkungan 📚
+  - `300+ XP`: Ksatria Hijau Utama 👑
+- **Persistensi State**: Semua data pemain (XP, Koin, materi dibaca, bookmark, lencana, kostum) tersimpan otomatis di `localStorage`.
+
+---
+
+## 🛠️ 5. Tech Stack & Fitur Teknis
+
+- **Backend Framework**: [Laravel 10](https://laravel.com/)
+- **Frontend & Assets**: Vite, Vanilla JavaScript (ES6+), Vanilla CSS3.
+- **Design System**: Glassmorphism, CSS Custom Properties, Google Fonts (Outfit & Plus Jakarta Sans).
+- **Game Engine**: HTML5 2D Canvas API (tanpa dependensi external engine).
+- **Audio Synthesizer**: **Web Audio API** — Efek suara sintetis 8-bit retro (square/sawtooth/triangle wave oscillators) tanpa membutuhkan file audio eksternal.
+- **Text-to-Speech**: SpeechSynthesis API browser.
+- **Visual Particle Effects**: Canvas Confetti Particle System (hujan confetti & ledakan particle).
+- **Navigasi Responsive**: Mobile drawer overlay dengan gesture hamburger menu.
+
+---
+
+## 🚀 6. Cara Menjalankan Project Secara Lokal
 
 1. **Persiapan Dependensi**:
-   Pastikan Anda sudah menginstal PHP, Composer, dan Node.js di komputer Anda.
+   Pastikan Anda sudah menginstal PHP (≥ 8.1), Composer, dan Node.js (≥ 18) di komputer Anda.
 
 2. **Setup File Environment**:
-   Duplikat file `.env.example` menjadi `.env` dan jalankan key generator:
+   Duplikat file `.env.example` menjadi `.env` dan generate application key:
    ```bash
    cp .env.example .env
    php artisan key:generate
@@ -74,11 +104,11 @@ Catatan pencapaian yang diperoleh pemain, seperti *Pilah Pemula*, *Kolektor Koin
    ```
 
 4. **Kompilasi Frontend (Vite)**:
-   - Untuk pengembangan lokal (*Hot Reload*):
+   - Mode Pengembangan (*Hot Module Replacement*):
      ```bash
      npm run dev
      ```
-   - Untuk membangun versi produksi:
+   - Mode Produksi (Build Bundle):
      ```bash
      npm run build
      ```
@@ -87,4 +117,4 @@ Catatan pencapaian yang diperoleh pemain, seperti *Pilah Pemula*, *Kolektor Koin
    ```bash
    php artisan serve
    ```
-   Buka browser di alamat `http://127.0.0.1:8000` untuk mulai bermain!
+   Buka browser dan akses [http://127.0.0.1:8000](http://127.0.0.1:8000) untuk memulai petualangan EcoLearn!
