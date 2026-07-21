@@ -124,7 +124,10 @@ let playerState = {
     purchasedCostumes: ['default'],
     organicCount: 0,
     hazardCount: 0,
-    perfectRuns: 0
+    perfectRuns: 0,
+    completedMaterials: [],
+    bookmarkedMaterials: [],
+    quizPerfect: false
 };
 
 function loadPlayerState() {
@@ -132,7 +135,13 @@ function loadPlayerState() {
     if (saved) {
         try {
             const parsed = JSON.parse(saved);
-            playerState = { ...playerState, ...parsed };
+            playerState = { 
+                completedMaterials: [],
+                bookmarkedMaterials: [],
+                quizPerfect: false,
+                ...playerState,
+                ...parsed 
+            };
         } catch (e) {
             console.error("Error loading player state", e);
         }
@@ -257,6 +266,7 @@ function updateProfileUI() {
     }
 
     updateShopItemsUI();
+    renderLeaderboard();
 }
 
 function updateShopItemsUI() {
@@ -287,22 +297,24 @@ function updateShopItemsUI() {
 }
 
 function checkBadges() {
+    const completed = Array.isArray(playerState.completedMaterials) ? playerState.completedMaterials : [];
     const badges = [
-        { id: 'badge-rookie', check: () => playerState.xp >= 50 },
+        { id: 'badge-rookie', check: () => completed.length >= 1 || playerState.xp >= 30 },
         { id: 'badge-coins', check: () => playerState.coins >= 50 },
-        { id: 'badge-organic', check: () => playerState.organicCount >= 10 },
-        { id: 'badge-hazardous', check: () => playerState.hazardCount >= 5 },
-        { id: 'badge-master', check: () => playerState.levelCompleted >= 5 },
-        { id: 'badge-perfect', check: () => playerState.perfectRuns >= 1 }
+        { id: 'badge-organic', check: () => completed.includes('mat-1') || completed.includes('mat-5') },
+        { id: 'badge-hazardous', check: () => completed.length >= 3 },
+        { id: 'badge-master', check: () => completed.length >= 6 },
+        { id: 'badge-perfect', check: () => playerState.quizPerfect === true }
     ];
     
+    let unlockedCount = 0;
     badges.forEach(b => {
         const el = document.getElementById(b.id);
         if (el) {
             const wasLocked = el.classList.contains('locked');
             if (b.check()) {
+                unlockedCount++;
                 el.classList.remove('locked');
-                // Trigger burst confetti if newly unlocked!
                 if (wasLocked) {
                     triggerLocalConfettiBurst();
                 }
@@ -311,9 +323,146 @@ function checkBadges() {
             }
         }
     });
+
+    const badgeCountEl = document.getElementById('badge-unlocked-count');
+    if (badgeCountEl) badgeCountEl.textContent = unlockedCount;
+
+    const badgePctText = document.getElementById('badge-pct-text');
+    if (badgePctText) {
+        const pct = Math.round((unlockedCount / 6) * 100);
+        badgePctText.textContent = `${pct}% Terkumpul`;
+    }
+
+    const badgeFill = document.getElementById('badge-progress-bar-fill');
+    if (badgeFill) {
+        badgeFill.style.width = `${(unlockedCount / 6) * 100}%`;
+    }
+
+    const badgeRankTitle = document.getElementById('badge-rank-title');
+    if (badgeRankTitle) {
+        if (unlockedCount >= 6) badgeRankTitle.textContent = "Master Literasi Eco 👑";
+        else if (unlockedCount >= 4) badgeRankTitle.textContent = "Pahlawan Terpelajar 📚";
+        else if (unlockedCount >= 2) badgeRankTitle.textContent = "Pembaca Giat 🌱";
+        else badgeRankTitle.textContent = "Pahlawan Pemula 🍃";
+    }
 }
 
-/* Dashboard tabs removed — badges and shop are now in separate section cards */
+/* =========================================================================
+   LEADERBOARD (BOT & USER RANKING SYSTEM)
+   ========================================================================= */
+const botLeaderboardData = [
+    { name: "Alya Eco Explorer 🌿", xp: 450, costume: "king", badgeTitle: "Master EcoLearn", avatarEmoji: "👧" },
+    { name: "Bima Pemilah Sampah 🌱", xp: 380, costume: "astronaut", badgeTitle: "Pelindung Lingkungan", avatarEmoji: "👦" },
+    { name: "Cinta Zero Waste ♻️", xp: 290, costume: "chef", badgeTitle: "Pelindung Lingkungan", avatarEmoji: "👩" },
+    { name: "Dafa Daur Ulang 📦", xp: 210, costume: "default", badgeTitle: "Pilah Junior", avatarEmoji: "🧑" },
+    { name: "Eka Penyelamat Bumi 🌍", xp: 160, costume: "default", badgeTitle: "Pilah Junior", avatarEmoji: "🧒" },
+    { name: "Farhan Hijau 🍃", xp: 120, costume: "default", badgeTitle: "Pilah Junior", avatarEmoji: "👦" },
+    { name: "Gita Clean Energy ⚡", xp: 75, costume: "default", badgeTitle: "Pahlawan Magang", avatarEmoji: "👧" },
+    { name: "Hadi Pahlawan Laut 🌊", xp: 40, costume: "default", badgeTitle: "Pahlawan Magang", avatarEmoji: "👦" }
+];
+
+function renderLeaderboard() {
+    const podiumContainer = document.getElementById('leaderboard-podium-container');
+    const listContainer = document.getElementById('leaderboard-list-container');
+    const userRankPill = document.getElementById('user-rank-status-pill');
+
+    if (!podiumContainer || !listContainer) return;
+
+    let userTitle = "Pahlawan Magang";
+    if (playerState.xp >= 300) userTitle = "Ksatria Hijau Utama";
+    else if (playerState.xp >= 150) userTitle = "Pelindung Lingkungan";
+    else if (playerState.xp >= 50) userTitle = "Pilah Junior";
+
+    const userEntry = {
+        isUser: true,
+        name: "Kamu (Pahlawan Eco) 🌟",
+        xp: playerState.xp || 0,
+        costume: playerState.activeCostume || 'default',
+        badgeTitle: userTitle,
+        avatarEmoji: "🌟"
+    };
+
+    const allPlayers = [...botLeaderboardData, userEntry];
+    allPlayers.sort((a, b) => b.xp - a.xp);
+
+    const userRank = allPlayers.findIndex(p => p.isUser) + 1;
+    if (userRankPill) {
+        userRankPill.textContent = `Peringkat Kamu: #${userRank} dari ${allPlayers.length} Pahlawan`;
+    }
+
+    const top3 = allPlayers.slice(0, 3);
+    
+    let podiumHtml = '';
+    const podiumOrder = [
+        { rank: 2, data: top3[1], crown: '🥈', class: 'rank-2' },
+        { rank: 1, data: top3[0], crown: '👑', class: 'rank-1' },
+        { rank: 3, data: top3[2], crown: '🥉', class: 'rank-3' }
+    ];
+
+    podiumOrder.forEach(item => {
+        if (!item.data) return;
+        const p = item.data;
+        const isUserClass = p.isUser ? 'is-user-podium' : '';
+        const nameDisplay = p.isUser ? 'Kamu 🌟' : p.name;
+        
+        let avatarContent = '';
+        if (p.costume) {
+            avatarContent = getLiloMascotHtml(p.costume, 54, 54);
+        } else {
+            avatarContent = p.avatarEmoji;
+        }
+
+        podiumHtml += `
+            <div class="podium-card ${item.class} ${isUserClass}">
+                <div class="podium-crown">${item.crown}</div>
+                <div class="podium-avatar">
+                    ${avatarContent}
+                </div>
+                <div class="podium-name">
+                    ${nameDisplay}
+                </div>
+                <div class="podium-title-tag">${p.badgeTitle}</div>
+                <div class="podium-xp-pill">⭐ ${p.xp} XP</div>
+            </div>
+        `;
+    });
+
+    podiumContainer.innerHTML = podiumHtml;
+
+    const listPlayers = allPlayers.slice(3);
+    let listHtml = '';
+
+    listPlayers.forEach((p, idx) => {
+        const actualRank = idx + 4;
+        const isUserClass = p.isUser ? 'is-user' : '';
+        const nameDisplay = p.isUser ? 'Kamu (Pahlawan Eco) 🌟' : p.name;
+
+        let avatarContent = '';
+        if (p.costume) {
+            avatarContent = getLiloMascotHtml(p.costume, 38, 38);
+        } else {
+            avatarContent = p.avatarEmoji;
+        }
+
+        listHtml += `
+            <div class="leaderboard-row ${isUserClass}">
+                <div class="leaderboard-rank-num">#${actualRank}</div>
+                <div class="leaderboard-player-info">
+                    <div class="leaderboard-player-avatar">
+                        ${avatarContent}
+                    </div>
+                    <div>
+                        <div class="leaderboard-player-name">${nameDisplay}</div>
+                        <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700;">${p.badgeTitle}</div>
+                    </div>
+                </div>
+                <div class="leaderboard-xp-val">⭐ ${p.xp} XP</div>
+            </div>
+        `;
+    });
+
+    listContainer.innerHTML = listHtml;
+}
 
 function initCostumeShop() {
     const buyButtons = document.querySelectorAll('.shop-item-card .btn-shop-action');
@@ -2009,135 +2158,755 @@ function initRiverDefender() {
 }
 
 /* =========================================================================
-   ECO ARCADE LOGIC
+   INTERACTIVE LEARNING HUB & READER LOGIC
    ========================================================================= */
-function initEcoArcade() {
-    const cardSorting = document.getElementById('card-play-sorting');
-    const cardRiver = document.getElementById('card-play-river');
-    const cardQuiz = document.getElementById('card-play-quiz');
-    const btnExit = document.getElementById('btn-arcade-exit');
-    
-    if (cardSorting) {
-        cardSorting.addEventListener('click', () => {
-            launchArcadeGame('sorting');
+
+const learningMaterials = [
+    {
+        id: 'mat-1',
+        title: 'Bab 1: Rahasia Pemilahan Sampah & 5 Warna Tong',
+        category: 'sorting',
+        categoryName: 'Pemilahan Sampah',
+        categoryIcon: '🌱',
+        categoryColor: '#f0fdf4',
+        categoryBorder: '#bbf7d0',
+        categoryTextColor: '#15803d',
+        ageTarget: 'kids',
+        ageLabel: '👶 Anak-Anak',
+        readTime: '3 Menit',
+        coverGradient: 'linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%)',
+        coverIcon: '🗑️',
+        excerpt: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Tahukah kamu mengapa tempat sampah di sekolah dan taman memiliki warna yang berbeda-beda? Yuk pelajari rahasia di baliknya!',
+        mascotTip: 'Bacalah rahasia warna tempat sampah ini! Setelah membaca, kamu akan bisa membedakan mana organik dan mana anorganik!',
+        contentHtml: `
+            <div style="margin-bottom: 1.5rem; text-align: center;">
+                <span style="background: #f0fdf4; color: #15803d; border: 1.5px solid #bbf7d0; padding: 0.35rem 1rem; border-radius: 20px; font-weight: 800; font-size: 0.85rem;">Bab 1 • Dasar Lingkungan</span>
+                <h2 style="font-family: var(--font-outfit); font-size: 1.8rem; font-weight: 800; color: var(--text-dark); margin: 0.8rem 0 0.5rem;">Rahasia Pemilahan Sampah & 5 Warna Tong</h2>
+                <p style="font-size: 0.95rem; color: var(--text-muted);">Dipublikasikan oleh Tim EcoLearn • Membaca Interaktif untuk Anak-Anak & Remaja</p>
+            </div>
+
+            <p class="reader-paragraph">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia odio vitae vestibulum vestibulum. Cras venenatis euismod malesuada. Sampah di sekitar kita bukanlah sekadar limbah buangan, melainkan sumber daya yang bisa dimanfaatkan kembali jika dipilah dengan benar!</p>
+
+            <h3 class="reader-heading-2"><span>🟢</span> 1. Tempat Sampah Hijau (Organik)</h3>
+            <p class="reader-paragraph">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Tong hijau diperuntukkan bagi sisa makanan, kulit buah, sisa sayuran, dan daun kering. Bahan-bahan ini bersifat alami dan mudah terurai kembali menjadi pupuk organik yang menyuburkan tanaman.</p>
+
+            <div class="reader-callout fact">
+                <strong>💡 Fakta Unik Eco:</strong>
+                Lorem ipsum dolor sit amet. Sampah organik yang diolah menjadi pupuk kompos dapat berkontribusi mengurangi emisi gas metana hingga 45% dari tempat pembuangan akhir!
+            </div>
+
+            <h3 class="reader-heading-2"><span>🔵</span> 2. Tempat Sampah Biru (Plastik & Anorganik)</h3>
+            <p class="reader-paragraph">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris. Botol kemasan, gelas plastik, dan wadah sintetis dibuang di sini agar dapat dicacah dan didaur ulang menjadi barang bermanfaat kembali.</p>
+
+            <h3 class="reader-heading-2"><span>🔴</span> 3. Tempat Sampah Merah (B3 & Residu Berbahaya)</h3>
+            <p class="reader-paragraph">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum. Baterai bekas, obat kadaluarsa, dan racun serangga termasuk dalam golongan ini karena mengandung racun berbahaya.</p>
+
+            <div class="reader-callout warning">
+                <strong>⚠️ Peringatan Penting Lilo:</strong>
+                Jangan membuang baterai bekas ke tempat sampah hijau atau biru ya! Cairan kimia baterai bisa meracuni tanah dan air bersih kita!
+            </div>
+
+            <h3 class="reader-heading-2"><span>📌</span> Rangkuman Poin Penting</h3>
+            <div class="reader-accordion-item">
+                <div class="reader-accordion-header" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? 'block' : 'none'">
+                    <span>Mengapa kita wajib memilah sampah dari rumah?</span>
+                    <span>▼</span>
+                </div>
+                <div class="reader-accordion-body" style="display: block;">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Dengan memilah sampah dari awal, kita memudahkan petugas daur ulang dan mencegah pencemaran tanah serta lautan.
+                </div>
+            </div>
+        `,
+        quiz: {
+            question: 'Warna tempat sampah manakah yang digunakan khusus untuk menampung sampah organik seperti kulit buah & sisa makanan?',
+            options: [
+                'Wajah Biru (Plastik)',
+                'Warna Hijau (Organik)',
+                'Warna Merah (B3 Berbahaya)',
+                'Warna Kuning (Logam)'
+            ],
+            correct: 1,
+            explanation: 'Tepat sekali! Tempat sampah berwarna hijau diperuntukkan khusus bagi bahan organik alami yang mudah membusuk dan dapat dijadikan kompos.'
+        }
+    },
+    {
+        id: 'mat-2',
+        title: 'Bab 2: Petualangan Plastik dari Sungai ke Samudra',
+        category: 'river',
+        categoryName: 'Sungai & Laut',
+        categoryIcon: '🌊',
+        categoryColor: '#e0f2fe',
+        categoryBorder: '#bae6fd',
+        categoryTextColor: '#0369a1',
+        ageTarget: 'kids',
+        ageLabel: '👶 Anak-Anak',
+        readTime: '4 Menit',
+        coverGradient: 'linear-gradient(135deg, #bae6fd 0%, #7dd3fc 100%)',
+        coverIcon: '🕸️',
+        excerpt: 'Lorem ipsum dolor sit amet, sed do eiusmod tempor incididunt ut labore. Pernahkah kamu membayangkan bagaimana sebotol plastik yang dibuang di got bisa sampai ke tengah lautan?',
+        mascotTip: 'Jelajahi alur perjalanan sampah air ini! Lilo akan menunjukkan dampak buruk plastik bagi penyu dan ikan laut.',
+        contentHtml: `
+            <div style="margin-bottom: 1.5rem; text-align: center;">
+                <span style="background: #e0f2fe; color: #0369a1; border: 1.5px solid #bae6fd; padding: 0.35rem 1rem; border-radius: 20px; font-weight: 800; font-size: 0.85rem;">Bab 2 • Ekosistem Perairan</span>
+                <h2 style="font-family: var(--font-outfit); font-size: 1.8rem; font-weight: 800; color: var(--text-dark); margin: 0.8rem 0 0.5rem;">Petualangan Plastik dari Sungai ke Samudra</h2>
+                <p style="font-size: 0.95rem; color: var(--text-muted);">Dipublikasikan oleh Tim EcoLearn • Membaca Interaktif untuk Anak-Anak & Remaja</p>
+            </div>
+
+            <p class="reader-paragraph">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Ketika seseorang membuang kantong plastik atau botol minuman sembarangan di tepi jalan, hujan deras akan menyapu plastik tersebut ke dalam saluran air (drainase).</p>
+
+            <h3 class="reader-heading-2"><span>💧</span> 1. Dari Got Bermuara ke Sungai Utama</h3>
+            <p class="reader-paragraph">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Air sungai berarus membawa plastik terus mengalir melewati pemukiman dan perkotaan. Sampah plastik ini terombang-ambing dan merusak keindahan ekosistem sungai.</p>
+
+            <div class="reader-callout fact">
+                <strong>🌊 Tahukah Kamu?</strong>
+                Lorem ipsum dolor sit amet. Sekitar 80% sampah plastik yang berada di samudra samudra luas berasal dari daratan yang terbawa oleh aliran sungai!
+            </div>
+
+            <h3 class="reader-heading-2"><span>🐢</span> 2. Bahaya Mikroplastik Bagi Satwa Laut</h3>
+            <p class="reader-paragraph">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sagittis ipsum. Praesent mauris. Di laut, paparan sinar matahari dan ombak memecah plastik besar menjadi serpihan kecil yang dinamakan <i>mikroplastik</i>. Penyu dan ikan sering terkecoh mengira kantong plastik transparan sebagai ubur-ubur makanan mereka.</p>
+
+            <div class="reader-callout tip">
+                <strong>🌿 Aksi Sederhana Penyelamat Laut:</strong>
+                Membawa botol minum milik sendiri ke sekolah dan menggunakan kantong belanja berbahan kain dapat menyelamatkan ratusan hewan laut dari ancaman plastik!
+            </div>
+        `,
+        quiz: {
+            question: 'Mengapa kantong plastik transparan yang hanyut di laut sangat berbahaya bagi penyu laut?',
+            options: [
+                'Karena kantong plastik terlihat seperti ubur-ubur makanan favorit penyu',
+                'Karena kantong plastik berbau harum seperti buah',
+                'Karena plastik membuat air laut menjadi sangat panas',
+                'Karena penyu suka mengumpulkan plastik untuk tempat tinggal'
+            ],
+            correct: 0,
+            explanation: 'Hebat! Penyu sering terkecoh mengira kantong plastik melayang sebagai ubur-ubur. Jika termakan, plastik dapat menyumbat pencernaan satwa laut.'
+        }
+    },
+    {
+        id: 'mat-3',
+        title: 'Bab 3: Misteri Sampah B3 & Bahaya Tersembunyi Baterai',
+        category: 'sorting',
+        categoryName: 'Pemilahan Sampah',
+        categoryIcon: '🔋',
+        categoryColor: '#fee2e2',
+        categoryBorder: '#fecaca',
+        categoryTextColor: '#991b1b',
+        ageTarget: 'teens',
+        ageLabel: '🧑‍🎓 Remaja',
+        readTime: '5 Menit',
+        coverGradient: 'linear-gradient(135deg, #fecaca 0%, #fca5a5 100%)',
+        coverIcon: '💡',
+        excerpt: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Membongkar bahaya zat kimia tersembunyi pada baterai bekas, lampu bohlam, dan e-waste bagi lingkungan.',
+        mascotTip: 'Materi ini penting sekali untuk dipahami remaja! Yuk pelajari bahaya asam baterai dan logam berat.',
+        contentHtml: `
+            <div style="margin-bottom: 1.5rem; text-align: center;">
+                <span style="background: #fee2e2; color: #991b1b; border: 1.5px solid #fecaca; padding: 0.35rem 1rem; border-radius: 20px; font-weight: 800; font-size: 0.85rem;">Bab 3 • Bahaya Tersembunyi (B3)</span>
+                <h2 style="font-family: var(--font-outfit); font-size: 1.8rem; font-weight: 800; color: var(--text-dark); margin: 0.8rem 0 0.5rem;">Misteri Sampah B3 & Bahaya Tersembunyi Baterai</h2>
+                <p style="font-size: 0.95rem; color: var(--text-muted);">Dipublikasikan oleh Tim EcoLearn • Pembelajaran Mendalam untuk Remaja</p>
+            </div>
+
+            <p class="reader-paragraph">Lorem ipsum dolor sit amet, consectetur adipiscing elit. B3 adalah singkatan dari <b>Bahan Berbahaya dan Beracun</b>. Banyak barang elektronik rumah tangga yang kita gunakan sehari-hari mengandung senyawa beracun yang memerlukan penanganan khusus.</p>
+
+            <h3 class="reader-heading-2"><span>⚡</span> 1. Kandungan Logam Berat pada Baterai Bekas</h3>
+            <p class="reader-paragraph">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Baterai bekas mengandung zat beracun seperti Kadmium, Merkuri, Timbal, dan Asam Sulfat. Ketika baterai dibuang ke tanah terbuka dan kehujanan, logam berat tersebut dapat meresap ke dalam air tanah yang kita minum.</p>
+
+            <div class="reader-callout warning">
+                <strong>⚠️ Bahaya Kebocoran B3:</strong>
+                Lorem ipsum dolor sit amet. Membakar limbah B3 secara sembarangan akan melepaskan gas dioksin beracun yang dapat membahayakan paru-paru dan kesehatan lingkungan sekitar!
+            </div>
+
+            <h3 class="reader-heading-2"><span>📱</span> 2. Pengelolaan Sampah Elektronik (E-Waste)</h3>
+            <p class="reader-paragraph">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Kabel bekas, smartphone rusak, dan komponen laptop harus dikumpulkan ke tempat penampungan e-waste khusus agar bahan logam langka di dalamnya dapat diekstrak kembali secara aman.</p>
+        `,
+        quiz: {
+            question: 'Apa kepanjangan dari istilah sampah B3?',
+            options: [
+                'Bahan Bersih, Baru, dan Bekas',
+                'Bahan Berbahaya dan Beracun',
+                'Barang Buangan Buatan Manusia',
+                'Batu Baterai dan Benda Logam'
+            ],
+            correct: 1,
+            explanation: 'Benar! B3 adalah singkatan dari Bahan Berbahaya dan Beracun yang memerlukan penanganan khusus agar tidak merusak tanah dan air tanah.'
+        }
+    },
+    {
+        id: 'mat-4',
+        title: 'Bab 4: Panduan Gaya Hidup Zero Waste untuk Remaja Modern',
+        category: 'zerowaste',
+        categoryName: 'Zero Waste',
+        categoryIcon: '♻️',
+        categoryColor: '#fef9c3',
+        categoryBorder: '#fef08a',
+        categoryTextColor: '#854d0e',
+        ageTarget: 'teens',
+        ageLabel: '🧑‍🎓 Remaja',
+        readTime: '4 Menit',
+        coverGradient: 'linear-gradient(135deg, #fef08a 0%, #fde047 100%)',
+        coverIcon: '🛍️',
+        excerpt: 'Lorem ipsum dolor sit amet, excepteur sint occaecat cupidatat non proident. Terapkan prinsip 5R untuk mengurangi jejak sampah plastik harianmu secara keren!',
+        mascotTip: 'Menjadi gaya hidup hijau itu keren dan hemat! Yuk pelajari aksi 5R bersama Lilo.',
+        contentHtml: `
+            <div style="margin-bottom: 1.5rem; text-align: center;">
+                <span style="background: #fef9c3; color: #854d0e; border: 1.5px solid #fef08a; padding: 0.35rem 1rem; border-radius: 20px; font-weight: 800; font-size: 0.85rem;">Bab 4 • Gaya Hidup Hijau</span>
+                <h2 style="font-family: var(--font-outfit); font-size: 1.8rem; font-weight: 800; color: var(--text-dark); margin: 0.8rem 0 0.5rem;">Panduan Gaya Hidup Zero Waste untuk Remaja Modern</h2>
+                <p style="font-size: 0.95rem; color: var(--text-muted);">Dipublikasikan oleh Tim EcoLearn • Pembelajaran Gaya Hidup Remaja</p>
+            </div>
+
+            <p class="reader-paragraph">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Zero waste bukan berarti tidak menghasilkan sampah sama sekali, melainkan usaha sadar untuk meminimalkan limbah yang berakhir di TPA dengan menerapkan prinsip 5R.</p>
+
+            <h3 class="reader-heading-2"><span>✋</span> 1. Refuse (Menolak Plastik Sekali Pakai)</h3>
+            <p class="reader-paragraph">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Katakan tidak pada sedotan plastik sekali pakai, kantong kresek belanjaan ringan, dan pembungkus berlebih saat jajan di luar.</p>
+
+            <h3 class="reader-heading-2"><span>🔄</span> 2. Reduce & Reuse (Mengurangi & Menggunakan Kembali)</h3>
+            <p class="reader-paragraph">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Bawalah tumbler minum favoritmu, kotak bekal, dan totebag kain. Selain ramah lingkungan, ini juga bisa menghemat uang jajanmu!</p>
+
+            <div class="reader-callout tip">
+                <strong>🌿 Tips Zero Waste Keren:</strong>
+                Lorem ipsum dolor sit amet. Manfaatkan botol kaca bekas selai atau wadah plastik bekas sebagai tempat pensil atau pot tanaman di meja belajarmu!
+            </div>
+        `,
+        quiz: {
+            question: 'Apa arti dari tindakan "Refuse" dalam gerakan Zero Waste?',
+            options: [
+                'Membuang sampah ke sungai',
+                'Menolak penggunaan plastik sekali pakai yang tidak perlu',
+                'Membakar sampah di halaman belakang',
+                'Membeli barang plastik sebanyak-banyaknya'
+            ],
+            correct: 1,
+            explanation: 'Pintar sekali! Refuse artinya menolak menggunakan produk sekali pakai yang berpotensi menjadi limbah jika ada alternatif yang lebih ramah lingkungan.'
+        }
+    },
+    {
+        id: 'mat-5',
+        title: 'Bab 5: Keajaiban Kompos: Mengubah Sisa Sayur Jadi Emas Hijau',
+        category: 'zerowaste',
+        categoryName: 'Zero Waste',
+        categoryIcon: '🪴',
+        categoryColor: '#f0fdf4',
+        categoryBorder: '#bbf7d0',
+        categoryTextColor: '#15803d',
+        ageTarget: 'kids',
+        ageLabel: '👶 Anak-Anak',
+        readTime: '3 Menit',
+        coverGradient: 'linear-gradient(135deg, #bbf7d0 0%, #86efac 100%)',
+        coverIcon: '🌱',
+        excerpt: 'Lorem ipsum dolor sit amet, sed ut perspiciatis unde omnis iste natus error. Rahasia bagaimana cacing dan bakteri tanah mengubah sampah dapur menjadi pupuk tanaman.',
+        mascotTip: 'Tahukah kamu sampah dapur bisa disulap jadi pupuk kaya nutrisi? Yuk baca petualangannya!',
+        contentHtml: `
+            <div style="margin-bottom: 1.5rem; text-align: center;">
+                <span style="background: #f0fdf4; color: #15803d; border: 1.5px solid #bbf7d0; padding: 0.35rem 1rem; border-radius: 20px; font-weight: 800; font-size: 0.85rem;">Bab 5 • Pengolahan Organik</span>
+                <h2 style="font-family: var(--font-outfit); font-size: 1.8rem; font-weight: 800; color: var(--text-dark); margin: 0.8rem 0 0.5rem;">Keajaiban Kompos: Mengubah Sisa Sayur Jadi Emas Hijau</h2>
+                <p style="font-size: 0.95rem; color: var(--text-muted);">Dipublikasikan oleh Tim EcoLearn • Membaca Praktis Praktikum Organik</p>
+            </div>
+
+            <p class="reader-paragraph">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Kompos adalah bahan organik alami yang dihasilkan dari pelapukan sisa tanaman, kulit buah, dan dedaunan yang diurai oleh mikroorganisme tanah.</p>
+
+            <h3 class="reader-heading-2"><span>🍂</span> 1. Bahan Hijau & Bahan Cokelat</h3>
+            <p class="reader-paragraph">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Untuk membuat kompos yang berkualitas, kita membutuhkan campuran kaya nitrogen (sisa sayur/buah segar) dan kaya karbon (daun kering, ranting kecil, kertas karton polos).</p>
+
+            <div class="reader-callout fact">
+                <strong>🪱 Teman Mikroorganismemu:</strong>
+                Cacing tanah dan bakteri pengurai bekerja siang dan malam mengubah tumpukan sampah dapur menjadi humus tanah yang subur dan wangi seperti bau tanah hujan!
+            </div>
+        `,
+        quiz: {
+            question: 'Manakah dari bahan berikut yang SANGAT COCOK dimasukkan ke dalam wadah komposter di rumah?',
+            options: [
+                'Kaleng minuman alumunium & botol kaca',
+                'Kulit pisang, sisa sayuran, dan daun kering',
+                'Baterai bekas dan kabel listrik',
+                'Kantong plastik dan styrofoam bekas'
+            ],
+            correct: 1,
+            explanation: 'Luar biasa! Kulit pisang, sisa sayuran, dan daun kering adalah bahan alami organik yang mudah diurai oleh bakteri komposter.'
+        }
+    },
+    {
+        id: 'mat-6',
+        title: 'Bab 6: Pemanasan Global & Peran Kita Menjaga Bumi',
+        category: 'climate',
+        categoryName: 'Iklim & Bumi',
+        categoryIcon: '🌍',
+        categoryColor: '#e0f2fe',
+        categoryBorder: '#bae6fd',
+        categoryTextColor: '#0284c7',
+        ageTarget: 'teens',
+        ageLabel: '🧑‍🎓 Remaja',
+        readTime: '5 Menit',
+        coverGradient: 'linear-gradient(135deg, #7dd3fc 0%, #38bdf8 100%)',
+        coverIcon: '☀️',
+        excerpt: 'Lorem ipsum dolor sit amet, nemo enim ipsam voluptatem quia voluptas. Memahami efek rumah kaca, jejak karbon (carbon footprint), dan aksi nyata remaja penyelemat bumi.',
+        mascotTip: 'Bumi butuh bantuan kita! Bacalah bagaimana langkah kecilmu berpengaruh besar bagi iklim global.',
+        contentHtml: `
+            <div style="margin-bottom: 1.5rem; text-align: center;">
+                <span style="background: #e0f2fe; color: #0284c7; border: 1.5px solid #bae6fd; padding: 0.35rem 1rem; border-radius: 20px; font-weight: 800; font-size: 0.85rem;">Bab 6 • Perubahan Iklim</span>
+                <h2 style="font-family: var(--font-outfit); font-size: 1.8rem; font-weight: 800; color: var(--text-dark); margin: 0.8rem 0 0.5rem;">Pemanasan Global & Peran Kita Menjaga Bumi</h2>
+                <p style="font-size: 0.95rem; color: var(--text-muted);">Dipublikasikan oleh Tim EcoLearn • Pengetahuan Iklim Global</p>
+            </div>
+
+            <p class="reader-paragraph">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pemanasan global merujuk pada peningkatan suhu rata-rata permukaan bumi akibat meningkatnya konsentrasi gas rumah kaca seperti karbon dioksida di atmosfer.</p>
+
+            <h3 class="reader-heading-2"><span>🌱</span> 1. Mengurangi Jejak Karbon Pribadi</h3>
+            <p class="reader-paragraph">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Jejak karbon adalah jumlah total gas rumah kaca yang dihasilkan dari aktivitas kita sehari-hari, seperti penggunaan listrik rumah tangga, pengisian daya hp, dan penggunaan kendaraan bermotor.</p>
+
+            <div class="reader-callout tip">
+                <strong>⚡ Aksi Hemat Energi:</strong>
+                Lorem ipsum dolor sit amet. Mematikan lampu ruangan saat siang hari dan berjalan kaki atau bersepeda ke lokasi dekat dapat menekan emisi jejak karbonmu!
+            </div>
+        `,
+        quiz: {
+            question: 'Manakah tindakan sederhana sehari-hari yang dapat membantu mengurangi jejak karbon pribadi?',
+            options: [
+                'Menyalakan lampu dan AC sepanjang hari meskipun kamar kosong',
+                'Bersepeda atau berjalan kaki saat bepergian ke tempat yang dekat',
+                'Membakar sampah plastik di pekarangan rumah',
+                'Membiarkan colokan charger laptop menancap terus-menerus'
+            ],
+            correct: 1,
+            explanation: 'Tepat sekali! Bersepeda atau berjalan kaki mengurangi penggunaan bahan bakar fosil sehingga menurunkan emisi karbon di udara.'
+        }
+    }
+];
+
+let activeCategoryFilter = 'all';
+let activeAgeFilter = 'all';
+let activeSearchQuery = '';
+let currentOpenedMaterialId = null;
+let currentFontSize = 1.05; // rem
+let isAudioReading = false;
+let currentSpeechUtterance = null;
+
+function initLearningHub() {
+    renderLearningCards();
+    updateLearningProgressUI();
+    setupLearningEvents();
+}
+
+function setupLearningEvents() {
+    // Search input event
+    const searchInput = document.getElementById('learning-search-input');
+    if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+            activeSearchQuery = e.target.value.trim().toLowerCase();
+            renderLearningCards();
         });
     }
-    if (cardRiver) {
-        cardRiver.addEventListener('click', () => {
-            launchArcadeGame('river');
+
+    // Category Filter Pills
+    const categoryBtns = document.querySelectorAll('.filter-pill');
+    categoryBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            categoryBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            activeCategoryFilter = btn.getAttribute('data-category');
+            renderLearningCards();
+        });
+    });
+
+    // Age Target Filter Pills
+    const ageBtns = document.querySelectorAll('.age-toggle-btn');
+    ageBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            ageBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            activeAgeFilter = btn.getAttribute('data-age');
+            renderLearningCards();
+        });
+    });
+
+    // Reader Modal Controls
+    const btnCloseReader = document.getElementById('btn-close-reader');
+    const btnReaderPrev = document.getElementById('btn-reader-prev');
+    const btnComplete = document.getElementById('btn-complete-material');
+    const btnFontInc = document.getElementById('btn-font-inc');
+    const btnFontDec = document.getElementById('btn-font-dec');
+    const btnAudio = document.getElementById('btn-reader-audio');
+    const btnBookmark = document.getElementById('btn-reader-bookmark');
+
+    if (btnCloseReader) btnCloseReader.addEventListener('click', closeReaderModal);
+    if (btnReaderPrev) btnReaderPrev.addEventListener('click', closeReaderModal);
+
+    if (btnFontInc) {
+        btnFontInc.addEventListener('click', () => {
+            if (currentFontSize < 1.4) {
+                currentFontSize += 0.08;
+                updateArticleFontSize();
+            }
         });
     }
-    if (cardQuiz) {
-        cardQuiz.addEventListener('click', () => {
-            launchArcadeGame('quiz');
+    if (btnFontDec) {
+        btnFontDec.addEventListener('click', () => {
+            if (currentFontSize > 0.85) {
+                currentFontSize -= 0.08;
+                updateArticleFontSize();
+            }
         });
     }
-    if (btnExit) {
-        btnExit.addEventListener('click', () => {
-            exitArcade();
+
+    if (btnAudio) {
+        btnAudio.addEventListener('click', toggleAudioReader);
+    }
+
+    if (btnBookmark) {
+        btnBookmark.addEventListener('click', toggleMaterialBookmark);
+    }
+
+    if (btnComplete) {
+        btnComplete.addEventListener('click', () => {
+            if (currentOpenedMaterialId) {
+                claimMaterialReward(currentOpenedMaterialId);
+            }
+        });
+    }
+
+    // Scroll listener for reading progress bar
+    const articleBody = document.getElementById('reader-article-body');
+    if (articleBody) {
+        articleBody.addEventListener('scroll', () => {
+            const scrollTop = articleBody.scrollTop;
+            const scrollHeight = articleBody.scrollHeight - articleBody.clientHeight;
+            const progress = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+            const progressFill = document.getElementById('reader-scroll-progress');
+            if (progressFill) {
+                progressFill.style.width = `${Math.min(100, Math.max(0, progress))}%`;
+            }
         });
     }
 }
 
-function launchArcadeGame(gameType) {
-    // 1. Hide selection menu
-    const menu = document.getElementById('arcade-menu');
-    if (menu) menu.style.display = 'none';
-    
-    // 2. Show arcade stage
-    const stage = document.getElementById('arcade-stage');
-    if (stage) stage.style.display = 'block';
-    
-    // 3. Hide all games first
-    const sorting = document.getElementById('arcade-sorting-wrapper');
-    const river = document.getElementById('arcade-river-wrapper');
-    const quiz = document.getElementById('arcade-quiz-wrapper');
-    
-    if (sorting) sorting.style.display = 'none';
-    if (river) river.style.display = 'none';
-    if (quiz) quiz.style.display = 'none';
-    
-    // 4. Reset/Stop any ongoing games
-    stopAllGames();
-    
-    // 5. Show target game and update headers
-    const iconEl = document.getElementById('active-game-icon');
-    const titleEl = document.getElementById('active-game-title');
-    
-    if (gameType === 'sorting') {
-        if (sorting) sorting.style.display = 'block';
-        if (iconEl) iconEl.textContent = '🗑️';
-        if (titleEl) titleEl.textContent = 'Game Pemilahan Sampah';
-        showGameScreen('screen-game-start');
-    } else if (gameType === 'river') {
-        if (river) river.style.display = 'block';
-        if (iconEl) iconEl.textContent = '🕸️';
-        if (titleEl) titleEl.textContent = 'Penyelamat Sungai';
-        // Reset river game state and show start screen
-        isRiverActive = false;
-        if (riverAnimId) cancelAnimationFrame(riverAnimId);
-        riverTrash = [];
-        riverParticles = [];
-        showRiverScreen('start');
-        // Draw initial background on canvas so it's not blank behind overlay
-        resizeRiverCanvas();
-        drawRiverGame();
-    } else if (gameType === 'quiz') {
-        if (quiz) quiz.style.display = 'block';
-        if (iconEl) iconEl.textContent = '💡';
-        if (titleEl) titleEl.textContent = 'Kuis Pahlawan Lingkungan';
-        document.querySelectorAll('.quiz-screen').forEach(s => s.classList.remove('active'));
-        const quizWelcome = document.getElementById('quiz-screen-welcome');
-        if (quizWelcome) quizWelcome.classList.add('active');
-    }
-    
-    if (stage) {
-        stage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+function updateArticleFontSize() {
+    const bodyEl = document.getElementById('reader-article-body');
+    if (bodyEl) {
+        bodyEl.style.fontSize = `${currentFontSize}rem`;
     }
 }
 
-function exitArcade() {
-    stopAllGames();
-    
-    const menu = document.getElementById('arcade-menu');
-    if (menu) menu.style.display = 'block';
-    
-    const stage = document.getElementById('arcade-stage');
-    if (stage) stage.style.display = 'none';
-    
-    const section = document.getElementById('eco-arcade');
-    if (section) {
-        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+function renderLearningCards() {
+    const container = document.getElementById('learning-cards-container');
+    if (!container) return;
+
+    const completed = Array.isArray(playerState.completedMaterials) ? playerState.completedMaterials : [];
+
+    const filtered = learningMaterials.filter(mat => {
+        // Category Filter
+        if (activeCategoryFilter !== 'all' && mat.category !== activeCategoryFilter) {
+            return false;
+        }
+        // Age Filter
+        if (activeAgeFilter !== 'all' && mat.ageTarget !== activeAgeFilter) {
+            return false;
+        }
+        // Search Filter
+        if (activeSearchQuery !== '') {
+            const matchTitle = mat.title.toLowerCase().includes(activeSearchQuery);
+            const matchExcerpt = mat.excerpt.toLowerCase().includes(activeSearchQuery);
+            const matchCat = mat.categoryName.toLowerCase().includes(activeSearchQuery);
+            if (!matchTitle && !matchExcerpt && !matchCat) return false;
+        }
+        return true;
+    });
+
+    if (filtered.length === 0) {
+        container.innerHTML = `
+            <div style="grid-column: 1 / -1; text-align: center; padding: 4rem 1rem; background: rgba(255,255,255,0.7); border-radius: 24px; border: 2px dashed #cbd5e1;">
+                <div style="font-size: 3.5rem; margin-bottom: 0.8rem;">🔍</div>
+                <h3 style="font-family: var(--font-outfit); font-size: 1.4rem; color: var(--text-dark); font-weight: 800; margin-bottom: 0.4rem;">Materi Tidak Ditemukan</h3>
+                <p style="color: var(--text-muted); font-size: 0.95rem; max-width: 400px; margin: 0 auto 1.2rem;">Coba gunakan kata kunci pencarian yang lain atau ubah filter topik dan target usia di atas.</p>
+                <button class="btn-hero-primary" onclick="resetLearningFilters()" style="padding: 0.6rem 1.4rem; font-size: 0.9rem;">Reset Filter 🔄</button>
+            </div>
+        `;
+        return;
+    }
+
+    container.innerHTML = filtered.map(mat => {
+        const isDone = completed.includes(mat.id);
+        const isBookmarked = Array.isArray(playerState.bookmarkedMaterials) && playerState.bookmarkedMaterials.includes(mat.id);
+
+        return `
+            <div class="material-card" onclick="openReaderModal('${mat.id}')">
+                <div class="material-card-header" style="background: ${mat.coverGradient};">
+                    <div class="material-header-icon">${mat.coverIcon}</div>
+                    <div style="display: flex; gap: 0.4rem; align-items: center;">
+                        ${isBookmarked ? `<span style="background: #ffffff; padding: 0.2rem 0.5rem; border-radius: 10px; font-size: 0.75rem;">🔖 Bookmark</span>` : ''}
+                        <span class="material-badge-age">${mat.ageLabel}</span>
+                    </div>
+                </div>
+
+                <div class="material-card-body">
+                    <div class="material-meta-row">
+                        <span class="material-tag-pill" style="background: ${mat.categoryColor}; color: ${mat.categoryTextColor}; border: 1px solid ${mat.categoryBorder};">
+                            ${mat.categoryIcon} ${mat.categoryName}
+                        </span>
+                        <span class="material-read-time">⏱️ ${mat.readTime}</span>
+                    </div>
+                    <h3 class="material-card-title">${mat.title}</h3>
+                    <p class="material-card-excerpt">${mat.excerpt}</p>
+                </div>
+
+                <div class="material-card-footer">
+                    <span class="material-status-tag ${isDone ? 'completed' : 'unread'}">
+                        ${isDone ? '✅ Selesai Dibaca' : '📖 Belum Dibaca'}
+                    </span>
+                    <button class="btn-hero-primary" style="padding: 0.5rem 1rem; font-size: 0.85rem; border-radius: 12px; pointer-events: none;">
+                        ${isDone ? 'Baca Lagi ➔' : 'Mulai Baca ➔'}
+                    </button>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+window.resetLearningFilters = function() {
+    activeCategoryFilter = 'all';
+    activeAgeFilter = 'all';
+    activeSearchQuery = '';
+    const searchInput = document.getElementById('learning-search-input');
+    if (searchInput) searchInput.value = '';
+    document.querySelectorAll('.filter-pill').forEach(b => {
+        b.classList.toggle('active', b.getAttribute('data-category') === 'all');
+    });
+    document.querySelectorAll('.age-toggle-btn').forEach(b => {
+        b.classList.toggle('active', b.getAttribute('data-age') === 'all');
+    });
+    renderLearningCards();
+};
+
+function updateLearningProgressUI() {
+    const completed = Array.isArray(playerState.completedMaterials) ? playerState.completedMaterials : [];
+    const total = learningMaterials.length;
+    const count = completed.length;
+    const percent = Math.round((count / total) * 100);
+
+    const textEl = document.getElementById('learning-progress-text');
+    const fillEl = document.getElementById('learning-progress-bar-fill');
+
+    if (textEl) textEl.textContent = `Progres: ${count} / ${total} Materi (${percent}%)`;
+    if (fillEl) fillEl.style.width = `${percent}%`;
+}
+
+function openReaderModal(materialId) {
+    const mat = learningMaterials.find(m => m.id === materialId);
+    if (!mat) return;
+
+    currentOpenedMaterialId = materialId;
+
+    const modal = document.getElementById('reader-modal');
+    if (!modal) return;
+
+    // Set Header UI
+    const catIcon = document.getElementById('reader-category-icon');
+    const catBadge = document.getElementById('reader-category-badge');
+    const modalTitle = document.getElementById('reader-modal-title');
+    const mascotTip = document.getElementById('reader-mascot-tip');
+    const metaTime = document.getElementById('reader-meta-time');
+    const metaAge = document.getElementById('reader-meta-age');
+    const metaStatus = document.getElementById('reader-meta-status');
+    const mascotContainer = document.getElementById('reader-mascot-container');
+
+    if (catIcon) catIcon.textContent = mat.categoryIcon;
+    if (catBadge) {
+        catBadge.textContent = `${mat.categoryIcon} ${mat.categoryName}`;
+        catBadge.style.background = mat.categoryColor;
+        catBadge.style.color = mat.categoryTextColor;
+        catBadge.style.border = `1px solid ${mat.categoryBorder}`;
+    }
+    if (modalTitle) modalTitle.textContent = mat.title;
+    if (mascotTip) mascotTip.textContent = `"${mat.mascotTip}"`;
+    if (metaTime) metaTime.textContent = `⏱️ ${mat.readTime}`;
+    if (metaAge) metaAge.textContent = mat.ageLabel;
+
+    const completed = Array.isArray(playerState.completedMaterials) ? playerState.completedMaterials : [];
+    const isDone = completed.includes(materialId);
+
+    if (metaStatus) {
+        metaStatus.textContent = isDone ? '✅ Selesai Dibaca' : '📖 Belum Selesai';
+        metaStatus.style.color = isDone ? '#16a34a' : '#ca8a04';
+    }
+
+    if (mascotContainer) {
+        mascotContainer.innerHTML = getLiloMascotHtml(playerState.activeCostume || 'default', 70, 70);
+    }
+
+    // Bookmark button state
+    updateBookmarkButtonUI(materialId);
+
+    // Build Content + Quiz HTML
+    const articleBody = document.getElementById('reader-article-body');
+    if (articleBody) {
+        articleBody.scrollTop = 0;
+        articleBody.innerHTML = `
+            ${mat.contentHtml}
+
+            <!-- End of Article Interactive Reflection Quiz -->
+            <div class="reader-quiz-box" id="reader-quiz-box">
+                <div style="display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.8rem;">
+                    <span style="font-size: 1.8rem;">💡</span>
+                    <h3 style="font-family: var(--font-outfit); font-size: 1.25rem; font-weight: 800; color: var(--text-dark); margin: 0;">Refleksi & Kuis Singkat</h3>
+                </div>
+                <p style="font-size: 0.92rem; color: var(--text-muted); margin-bottom: 1.2rem;">Uji pemahamanmu seputar materi yang baru saja kamu baca untuk memastikan kamu sudah paham!</p>
+                <h4 style="font-size: 1rem; font-weight: 800; color: var(--text-dark); margin-bottom: 1rem;">${mat.quiz.question}</h4>
+                <div class="reader-quiz-options-grid">
+                    ${mat.quiz.options.map((opt, idx) => `
+                        <div class="reader-quiz-option" onclick="handleReaderQuizSelect(${idx}, ${mat.quiz.correct}, '${mat.quiz.explanation.replace(/'/g, "\\'")}')">
+                            ${opt}
+                        </div>
+                    `).join('')}
+                </div>
+                <div id="reader-quiz-feedback" style="display: none; margin-top: 1rem; padding: 1rem; border-radius: 14px; font-weight: 700; font-size: 0.92rem; line-height: 1.5;"></div>
+            </div>
+        `;
+    }
+
+    // Reset scroll progress bar
+    const progressFill = document.getElementById('reader-scroll-progress');
+    if (progressFill) progressFill.style.width = '0%';
+
+    // Display modal
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
+
+function closeReaderModal() {
+    const modal = document.getElementById('reader-modal');
+    if (modal) modal.style.display = 'none';
+    document.body.style.overflow = '';
+    stopAudioReader();
+}
+
+window.handleReaderQuizSelect = function(selectedIndex, correctIndex, explanation) {
+    const options = document.querySelectorAll('.reader-quiz-option');
+    const feedback = document.getElementById('reader-quiz-feedback');
+
+    options.forEach((opt, idx) => {
+        opt.classList.remove('correct', 'wrong');
+        if (idx === correctIndex) {
+            opt.classList.add('correct');
+        } else if (idx === selectedIndex) {
+            opt.classList.add('wrong');
+        }
+    });
+
+    if (feedback) {
+        feedback.style.display = 'block';
+        if (selectedIndex === correctIndex) {
+            feedback.style.background = '#dcfce7';
+            feedback.style.color = '#15803d';
+            feedback.style.border = '1.5px solid #86efac';
+            feedback.innerHTML = `🎉 <b>Benar Sekali!</b> ${explanation}`;
+            playerState.quizPerfect = true;
+            savePlayerState();
+            checkBadges();
+        } else {
+            feedback.style.background = '#fee2e2';
+            feedback.style.color = '#b91c1c';
+            feedback.style.border = '1.5px solid #fecaca';
+            feedback.innerHTML = `Wah, belum tepat! Jawaban yang benar adalah pilihan ke-${correctIndex + 1}. ${explanation}`;
+        }
+    }
+};
+
+function toggleMaterialBookmark() {
+    if (!currentOpenedMaterialId) return;
+
+    if (!Array.isArray(playerState.bookmarkedMaterials)) {
+        playerState.bookmarkedMaterials = [];
+    }
+
+    const idx = playerState.bookmarkedMaterials.indexOf(currentOpenedMaterialId);
+    if (idx >= 0) {
+        playerState.bookmarkedMaterials.splice(idx, 1);
+    } else {
+        playerState.bookmarkedMaterials.push(currentOpenedMaterialId);
+    }
+
+    savePlayerState();
+    updateBookmarkButtonUI(currentOpenedMaterialId);
+    renderLearningCards();
+}
+
+function updateBookmarkButtonUI(materialId) {
+    const icon = document.getElementById('bookmark-icon');
+    const isBookmarked = Array.isArray(playerState.bookmarkedMaterials) && playerState.bookmarkedMaterials.includes(materialId);
+    if (icon) {
+        icon.textContent = isBookmarked ? '🔖 Marked' : '🔖 Bookmark';
     }
 }
 
-function stopAllGames() {
-    // Stop trash sorting game
-    isGameActive = false;
-    if (typeof gameInterval !== 'undefined' && gameInterval) {
-        clearInterval(gameInterval);
-        gameInterval = null;
+function toggleAudioReader() {
+    if (isAudioReading) {
+        stopAudioReader();
+    } else {
+        startAudioReader();
     }
-    if (typeof gameAnimId !== 'undefined' && gameAnimId) {
-        cancelAnimationFrame(gameAnimId);
-        gameAnimId = null;
-    }
-    const canvasArea = document.getElementById('game-canvas-area');
-    if (canvasArea) canvasArea.innerHTML = '';
-    
-    // Stop river defender game
-    isRiverActive = false;
-    if (typeof riverAnimId !== 'undefined' && riverAnimId) {
-        cancelAnimationFrame(riverAnimId);
-        riverAnimId = null;
-    }
-    riverTrash = [];
-    riverParticles = [];
 }
 
-// Make them globally available
-window.launchArcadeGame = launchArcadeGame;
-window.exitArcade = exitArcade;
+function startAudioReader() {
+    const btn = document.getElementById('btn-reader-audio');
+    const audioIcon = document.getElementById('reader-audio-icon');
+    const audioText = document.getElementById('reader-audio-text');
+
+    if ('speechSynthesis' in window) {
+        const articleText = document.getElementById('reader-article-body')?.innerText || '';
+        if (articleText) {
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(articleText.substring(0, 300));
+            utterance.lang = 'id-ID';
+            utterance.onend = () => {
+                stopAudioReader();
+            };
+            window.speechSynthesis.speak(utterance);
+            currentSpeechUtterance = utterance;
+        }
+    }
+
+    isAudioReading = true;
+    if (btn) btn.classList.add('active-audio');
+    if (audioIcon) audioIcon.textContent = '🔊';
+    if (audioText) audioText.textContent = 'Sedang Membaca...';
+}
+
+function stopAudioReader() {
+    isAudioReading = false;
+    if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+    }
+    const btn = document.getElementById('btn-reader-audio');
+    const audioIcon = document.getElementById('reader-audio-icon');
+    const audioText = document.getElementById('reader-audio-text');
+
+    if (btn) btn.classList.remove('active-audio');
+    if (audioIcon) audioIcon.textContent = '🔊';
+    if (audioText) audioText.textContent = 'Dengarkan';
+}
+
+function claimMaterialReward(materialId) {
+    if (!Array.isArray(playerState.completedMaterials)) {
+        playerState.completedMaterials = [];
+    }
+
+    const isFirstTime = !playerState.completedMaterials.includes(materialId);
+
+    if (isFirstTime) {
+        playerState.completedMaterials.push(materialId);
+        playerState.xp += 30;
+        playerState.coins += 15;
+        savePlayerState();
+        triggerLocalConfettiBurst();
+    }
+
+    updateProfileUI();
+    checkBadges();
+    updateLearningProgressUI();
+    renderLearningCards();
+
+    closeReaderModal();
+}
+
+// Global scope bindings
+window.openReaderModal = openReaderModal;
+window.closeReaderModal = closeReaderModal;
 
 /* =========================================================================
    DOM CONTENT LOADED INITIALIZATION
@@ -2147,15 +2916,11 @@ document.addEventListener('DOMContentLoaded', () => {
     renderAllMascots();
     updateProfileUI();
     checkBadges();
-    updateDropdownLevelList();
     
     initScrollEffects();
 
     initCostumeShop();
-    initGameControls();
-    initRiverDefender();
-    initQuizEngine();
-    initEcoArcade();
+    initLearningHub();
     initMobileNav();
     initBackToTop();
 });

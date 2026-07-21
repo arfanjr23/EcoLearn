@@ -48,8 +48,9 @@
             <nav style="display: flex; align-items: center; gap: 1.5rem;">
                 <ul class="nav-links" id="nav-menu">
                     <li><a href="#beranda" class="active">Beranda</a></li>
-                    <li><a href="#eco-arcade">Eco Arcade</a></li>
-                    <li><a href="#koleksi">Koleksi & Toko</a></li>
+                    <li><a href="#modul-belajar">Modul Belajar 📚</a></li>
+                    <li><a href="#koleksi">Koleksi & Toko 👕</a></li>
+                    <li><a href="#peringkat">Peringkat 🏆</a></li>
                 </ul>
             </nav>
 
@@ -63,7 +64,7 @@
                         <span class="stat-icon">🪙</span> <span id="header-coins">0</span> <span style="font-size: 0.75rem; color:var(--text-muted); font-weight:800;">Koin</span>
                     </div>
                 </div>
-                <a href="#eco-arcade" class="btn-cta" style="padding: 0.55rem 1.2rem; font-size: 0.85rem;">Main Arcade! 🎮</a>
+                <a href="#modul-belajar" class="btn-cta" style="padding: 0.55rem 1.2rem; font-size: 0.85rem;">Mulai Belajar! 📖</a>
                 <!-- Hamburger Menu Button (Mobile) -->
                 <button class="hamburger-btn" id="hamburger-btn" aria-label="Buka menu navigasi">
                     <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -86,13 +87,17 @@
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
             Beranda
         </a>
-        <a href="#eco-arcade" class="mobile-nav-link">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h4M8 10v4"/><circle cx="15" cy="12" r="1"/><circle cx="18" cy="12" r="1"/></svg>
-            Eco Arcade
+        <a href="#modul-belajar" class="mobile-nav-link">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+            Modul Belajar
         </a>
         <a href="#koleksi" class="mobile-nav-link">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
             Koleksi & Toko
+        </a>
+        <a href="#peringkat" class="mobile-nav-link">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M12 2a6 6 0 0 1 6 6v3.2a6 6 0 0 1-2.14 4.54l-1.72 1.46c-.53.45-.85 1.1-.9 1.8H10.76c-.05-.7-.37-1.35-.9-1.8l-1.72-1.46A6 6 0 0 1 6 11.2V8a6 6 0 0 1 6-6z"/></svg>
+            Peringkat
         </a>
     </nav>
 
@@ -104,436 +109,367 @@
                     <!-- Dynamic SVG Lilo rendered here -->
                 </div>
                 <div class="mascot-bubble">
-                    <span>Hai! Aku <b>Lilo</b>! Yuk bantu aku memilah sampah agar bumi kita tetap bersih dan hijau! 🌍💚</span>
+                    <span>Hai! Aku <b>Lilo</b>! Yuk baca materi seru seputar pemilahan sampah dan kelestarian bumi! 🌍💚</span>
                 </div>
             </div>
 
-            <div class="hero-tag">🌱 Pahlawan Lingkungan Cilik!</div>
+            <div class="hero-tag">🌱 Pahlawan Lingkungan Cilik & Remaja!</div>
             <h1 class="hero-title">Cintai Bumi Bersama <span>EcoLearn</span></h1>
-            <p class="hero-desc">Belajar cara merawat lingkungan dengan memilah sampah lewat game interaktif yang seru, edukatif, dan menyenangkan!</p>
+            <p class="hero-desc">Jelajahi petualangan membaca materi lingkungan yang seru, interaktif, dan mudah dipahami untuk anak-anak dan remaja!</p>
             <div class="hero-actions">
-                <a href="#eco-arcade" class="btn-hero-primary">Masuk Eco Arcade 🎮</a>
+                <a href="#modul-belajar" class="btn-hero-primary">Mulai Membaca 📖</a>
                 <a href="#koleksi" class="btn-hero-secondary">Toko Kostum 👕</a>
             </div>
         </div>
-        <a href="#eco-arcade" class="scroll-indicator" aria-label="Gulir ke bawah">
+        <a href="#modul-belajar" class="scroll-indicator" aria-label="Gulir ke bawah">
             <span>Scroll Kebawah</span>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 16.5l-6-6h12z"/></svg>
         </a>
     </section>
 
-    <!-- Unified Eco Arcade Section -->
-    <section class="section" id="eco-arcade" style="background: linear-gradient(135deg, rgba(224, 242, 254, 0.3) 0%, rgba(240, 253, 244, 0.3) 100%); border-top: 3px solid rgba(187, 247, 208, 0.5); border-bottom: 3px solid rgba(187, 247, 208, 0.5);">
+    <!-- Interactive Learning Modules Section -->
+    <section class="section" id="modul-belajar" style="background: linear-gradient(135deg, rgba(240, 253, 244, 0.5) 0%, rgba(224, 242, 254, 0.5) 100%); border-top: 3px solid rgba(187, 247, 208, 0.6); border-bottom: 3px solid rgba(187, 247, 208, 0.6);">
         <div class="container">
             <div class="section-header reveal">
-                <span class="section-tag" style="background: #f0fdf4; color: #15803d; border: 1.5px solid #bbf7d0;">Pusat Bermain</span>
-                <h2 class="section-title">Eco Arcade 🎮</h2>
-                <p class="section-desc">Selamat datang di Eco Arcade! Pilih salah satu mini-game di bawah ini untuk belajar merawat lingkungan dengan cara yang sangat seru dan interaktif. Dapatkan Koin dan XP untuk melengkapi koleksi kostum Lilo!</p>
+                <span class="section-tag" style="background: #f0fdf4; color: #15803d; border: 1.5px solid #bbf7d0;">Pusat Literasi Eco</span>
+                <h2 class="section-title">Modul Belajar Interaktif 📚</h2>
+                <p class="section-desc">Pilih dan baca materi seru seputar pemilahan sampah dan kelestarian lingkungan! Selesaikan bacaan dan kuis di tiap materi untuk mengumpulkan XP & Koin!</p>
             </div>
 
-            <div class="arcade-cabinet reveal">
-                <!-- Arcade Game Selection Screen -->
-                <div class="arcade-menu" id="arcade-menu">
-                    <div class="arcade-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-top: 1rem;">
-                        
-                        <!-- Card 1: Trash Sorting -->
-                        <div class="arcade-card glass-panel" id="card-play-sorting" style="display: flex; flex-direction: column; justify-content: space-between; padding: 2rem; border-radius: 24px; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease; border: 3px solid #bbf7d0; background: rgba(255, 255, 255, 0.7); position: relative; overflow: hidden; cursor: pointer;">
-                            <div class="card-glow" style="position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(74, 222, 128, 0.1) 0%, rgba(255,255,255,0) 70%); pointer-events: none;"></div>
-                            <div>
-                                <div style="font-size: 3.5rem; margin-bottom: 1rem; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));">🗑️</div>
-                                <h3 style="font-family: var(--font-outfit); font-size: 1.5rem; font-weight: 800; color: var(--text-dark); margin-bottom: 0.8rem;">Game Pemilahan Sampah</h3>
-                                <p style="font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.5rem;">Seret dan pilah sampah yang jatuh ke 5 tong sampah yang tepat! Latih kepekaanmu memisahkan sampah organik, anorganik, dan B3.</p>
-                            </div>
-                            <div>
-                                <div style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
-                                    <span style="background: #e8f5e9; color: #2e7d32; font-size: 0.8rem; font-weight: 700; padding: 0.3rem 0.7rem; border-radius: 20px; border: 1px solid #c8e6c9;">⭐ 5 Tingkat Level</span>
-                                    <span style="background: #e3f2fd; color: #1565c0; font-size: 0.8rem; font-weight: 700; padding: 0.3rem 0.7rem; border-radius: 20px; border: 1px solid #bbdefb;">🎮 Drag & Drop / Klik</span>
-                                </div>
-                                <button class="btn-hero-primary" style="width: 100%; border: none; padding: 0.8rem; font-size: 1rem; border-radius: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">Mainkan Game ➔</button>
+            <!-- Filters & Controls Bar -->
+            <div class="learning-controls-bar reveal" style="background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); border-radius: 24px; padding: 1.5rem; border: 2px solid #bbf7d0; margin-bottom: 2rem; box-shadow: 0 10px 30px rgba(0,0,0,0.03); display: flex; flex-direction: column; gap: 1.2rem;">
+                
+                <!-- Search & Overall Progress -->
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+                    <!-- Search Input -->
+                    <div style="position: relative; flex: 1; min-width: 260px;">
+                        <span style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); font-size: 1.1rem; pointer-events: none; color: #94a3b8;">🔍</span>
+                        <input type="text" id="learning-search-input" placeholder="Cari topik atau materi..." style="width: 100%; padding: 0.8rem 1rem 0.8rem 2.8rem; border-radius: 16px; border: 2px solid #cbd5e1; outline: none; font-size: 0.95rem; font-family: var(--font-main); transition: all 0.2s ease; background: #ffffff;">
+                    </div>
+
+                    <!-- Overall Learning Progress Pill -->
+                    <div class="stat-pill" style="padding: 0.6rem 1.2rem; font-size: 0.9rem; border-color:#86efac; background:#f0fdf4; display: flex; align-items: center; gap: 0.6rem;">
+                        <span style="font-size: 1.2rem;">📖</span>
+                        <div>
+                            <span style="font-weight: 800; color: var(--text-dark);" id="learning-progress-text">Progres: 0 / 6 Materi</span>
+                            <div style="width: 120px; height: 8px; background: #dcfce7; border-radius: 10px; overflow: hidden; margin-top: 3px;">
+                                <div id="learning-progress-bar-fill" style="width: 0%; height: 100%; background: linear-gradient(90deg, #4ade80, #22c55e); border-radius: 10px; transition: width 0.3s ease;"></div>
                             </div>
                         </div>
-
-                        <!-- Card 2: River Defender -->
-                        <div class="arcade-card glass-panel" id="card-play-river" style="display: flex; flex-direction: column; justify-content: space-between; padding: 2rem; border-radius: 24px; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease; border: 3px solid #bae6fd; background: rgba(255, 255, 255, 0.7); position: relative; overflow: hidden; cursor: pointer;">
-                            <div class="card-glow" style="position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(14, 165, 233, 0.1) 0%, rgba(255,255,255,0) 70%); pointer-events: none;"></div>
-                            <div>
-                                <div style="font-size: 3.5rem; margin-bottom: 1rem; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));">🕸️</div>
-                                <h3 style="font-family: var(--font-outfit); font-size: 1.5rem; font-weight: 800; color: var(--text-dark); margin-bottom: 0.8rem;">Penyelamat Sungai</h3>
-                                <p style="font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.5rem;">Gerakkan jaring untuk menangkap botol plastik, kaleng, dan kantong kresek sebelum hanyut terbawa air sungai menuju lautan bebas!</p>
-                            </div>
-                            <div>
-                                <div style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
-                                    <span style="background: #e0f2fe; color: #0369a1; font-size: 0.8rem; font-weight: 700; padding: 0.3rem 0.7rem; border-radius: 20px; border: 1px solid #bae6fd;">⭐ Rekor Skor</span>
-                                    <span style="background: #fef2f2; color: #ef4444; font-size: 0.8rem; font-weight: 700; padding: 0.3rem 0.7rem; border-radius: 20px; border: 1px solid #fecaca;">🎮 Gerak Mouse/Sentuh</span>
-                                </div>
-                                <button class="btn-hero-primary" style="width: 100%; border: none; padding: 0.8rem; font-size: 1rem; border-radius: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem; background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%); box-shadow: 0 6px 15px rgba(2, 132, 199, 0.25);">Mainkan Game ➔</button>
-                            </div>
-                        </div>
-
-                        <!-- Card 3: Quiz -->
-                        <div class="arcade-card glass-panel" id="card-play-quiz" style="display: flex; flex-direction: column; justify-content: space-between; padding: 2rem; border-radius: 24px; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease; border: 3px solid #fef08a; background: rgba(255, 255, 255, 0.7); position: relative; overflow: hidden; cursor: pointer;">
-                            <div class="card-glow" style="position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(234, 179, 8, 0.1) 0%, rgba(255,255,255,0) 70%); pointer-events: none;"></div>
-                            <div>
-                                <div style="font-size: 3.5rem; margin-bottom: 1rem; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));">💡</div>
-                                <h3 style="font-family: var(--font-outfit); font-size: 1.5rem; font-weight: 800; color: var(--text-dark); margin-bottom: 0.8rem;">Kuis Pahlawan Lingkungan</h3>
-                                <p style="font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.5rem;">Jawab 5 teka-teki pemilahan dan pengetahuan lingkungan dari Lilo. Dapatkan gelar kehormatan Pahlawan Lingkungan Cilik!</p>
-                            </div>
-                            <div>
-                                <div style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
-                                    <span style="background: #fef9c3; color: #854d0e; font-size: 0.8rem; font-weight: 700; padding: 0.3rem 0.7rem; border-radius: 20px; border: 1px solid #fef08a;">⭐ Bonus Koin & XP</span>
-                                    <span style="background: #faf5ff; color: #6b21a8; font-size: 0.8rem; font-weight: 700; padding: 0.3rem 0.7rem; border-radius: 20px; border: 1px solid #f3e8ff;">🎮 Pilihan Ganda</span>
-                                </div>
-                                <button class="btn-hero-primary" style="width: 100%; border: none; padding: 0.8rem; font-size: 1rem; border-radius: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem; background: linear-gradient(135deg, #facc15 0%, #ca8a04 100%); box-shadow: 0 6px 15px rgba(202, 138, 4, 0.25);">Mainkan Kuis ➔</button>
-                            </div>
-                        </div>
-
                     </div>
                 </div>
 
-                <!-- Arcade Play Stage -->
-                <div class="arcade-stage" id="arcade-stage" style="display: none; border-radius: 24px; border: 4px solid var(--border-color); background: #ffffff; padding: 2rem; box-shadow: 0 15px 35px rgba(0,0,0,0.06); position: relative; margin-top: 1.5rem;">
-                    
-                    <!-- Stage Header Bar with Exit Button and Status -->
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 2px dashed #cbd5e1;">
-                        <div style="display: flex; align-items: center; gap: 0.5rem;">
-                            <span id="active-game-icon" style="font-size: 1.8rem;">🎮</span>
-                            <h4 id="active-game-title" style="font-family: var(--font-outfit); font-size: 1.4rem; font-weight: 800; color: var(--text-dark); margin: 0;">Sedang Memainkan</h4>
-                        </div>
-                        <button class="btn-arcade-exit" id="btn-arcade-exit" style="background: #fee2e2; border: 2px solid #fecaca; color: #ef4444; padding: 0.55rem 1.3rem; border-radius: 12px; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 0.4rem; font-size: 0.9rem; transition: all 0.2s ease;">
-                            🚪 Keluar Ke Menu Arcade
-                        </button>
+                <!-- Category Filters & Age Target Filters -->
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; border-top: 1px dashed #e2e8f0; padding-top: 1rem;">
+                    <!-- Category Pills -->
+                    <div class="filter-pills-group" style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                        <button class="filter-pill active" data-category="all">🌟 Semua Topik</button>
+                        <button class="filter-pill" data-category="sorting">🌱 Pemilahan Sampah</button>
+                        <button class="filter-pill" data-category="river">🌊 Sungai & Laut</button>
+                        <button class="filter-pill" data-category="zerowaste">♻️ Zero Waste</button>
+                        <button class="filter-pill" data-category="climate">🌍 Iklim & Bumi</button>
                     </div>
 
-                    <!-- Game Container: Trash Sorting -->
-                    <div class="arcade-game-wrapper" id="arcade-sorting-wrapper" style="display: none;">
-                        <div class="game-wrapper" style="max-width: 850px; margin: 0 auto;">
-                            <!-- Left Panel: Game Play Board -->
-                            <div class="glass-panel game-card">
-                                <div class="game-top-bar">
-                                    <div class="game-level-indicator">Level: <span id="game-current-level">1</span></div>
-                                    <div class="game-lives" id="game-lives-container">
-                                        Nyawa: ❤️❤️❤️
-                                    </div>
-                                    <div class="game-progress">
-                                        Poin: <span id="game-score-count">0</span> / <span id="game-target-count">5</span>
-                                    </div>
-                                </div>
-
-                                <div class="game-play-area" id="game-play-area">
-                                    <!-- Screen: Start Game -->
-                                    <div class="game-screen active" id="screen-game-start">
-                                        <div class="game-start-content">
-                                            <div class="mascot-avatar-large" id="mascot-preview-start">
-                                                <!-- Dynamic SVG -->
-                                            </div>
-                                            <h3>Misi Pemilahan Sampah</h3>
-                                            <p>Bantu Lilo menyortir sampah ke 5 kategori tempat sampah: 🟢 Organik, 🔵 Plastik, 🟡 Logam, ⚪ Kertas, dan 🔴 B3. Gunakan drag-and-drop atau klik sampah lalu klik tong sampah.</p>
-                                            <div class="level-select-container">
-                                                <label for="level-select" style="font-weight: 800; color: var(--text-dark); margin-right: 0.5rem;">Pilih Level:</label>
-                                                <select id="level-select" class="level-dropdown">
-                                                    <option value="1">Level 1: Organik & Plastik (Lambat)</option>
-                                                    <option value="2">Level 2: Tambah Kertas (Sedang)</option>
-                                                    <option value="3">Level 3: Tambah Logam (Cepat)</option>
-                                                    <option value="4">Level 4: Lengkap 5 Kategori (Sangat Cepat)</option>
-                                                    <option value="5">Level 5: Tantangan Kemiripan (Awas Terkecoh! ⚠️)</option>
-                                                </select>
-                                            </div>
-                                            <button class="btn-hero-primary" id="btn-start-sorting">Mulai Memilah! 🎮</button>
-                                        </div>
-                                    </div>
-
-                                    <!-- Screen: Playing -->
-                                    <div class="game-screen" id="screen-game-playing">
-                                        <div id="game-canvas-area">
-                                            <!-- Trash items will fall here -->
-                                        </div>
-                                        <div class="bins-container" id="bins-container">
-                                            <!-- Bins will be rendered here dynamically -->
-                                        </div>
-                                    </div>
-
-                                    <!-- Screen: Level Won -->
-                                    <div class="game-screen" id="screen-level-won">
-                                        <div class="game-win-card">
-                                            <div class="win-icon">🏆</div>
-                                            <h3 class="game-win-title">Misi Berhasil!</h3>
-                                            <p class="game-win-desc" id="win-feedback-text">Luar biasa! Kamu berhasil membersihkan semua sampah di level ini.</p>
-                                            <div class="reward-display">
-                                                <div class="reward-pill"><span class="reward-icon">⭐</span> +<span id="win-xp-reward">50</span> XP</div>
-                                                <div class="reward-pill"><span class="reward-icon">🪙</span> +<span id="win-coins-reward">20</span> Koin</div>
-                                            </div>
-                                            <div style="display:flex;gap:1rem;margin-top:1rem;">
-                                                <button class="btn-hero-primary" id="btn-next-level">Level Selanjutnya ➔</button>
-                                                <button class="btn-game-replay" id="btn-win-replay">🔄 Main Lagi</button>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Screen: Game Over -->
-                                    <div class="game-screen" id="screen-game-over">
-                                        <div class="game-win-card" style="gap: 0.8rem;">
-                                            <div class="win-icon" style="background:#ffeaea;border-color:#ee5253;">💥</div>
-                                            <h3 class="game-win-title" style="color:#ee5253;">Misi Gagal!</h3>
-                                            <p class="game-win-desc">Jangan menyerah! Banyak sampah yang menumpuk atau salah tempat. Mari coba lagi!</p>
-                                            <button class="btn-hero-primary" id="btn-retry-game" style="background:var(--fire-grad);box-shadow: 0 8px 20px var(--fire-glow);">Coba Lagi 🔄</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                    <!-- Age Target Filter -->
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <span style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted);">Target Usia:</span>
+                        <div style="display: flex; background: #f1f5f9; padding: 3px; border-radius: 14px; border: 1px solid #e2e8f0;">
+                            <button class="age-toggle-btn active" data-age="all">Semua</button>
+                            <button class="age-toggle-btn" data-age="kids">👶 Anak-Anak</button>
+                            <button class="age-toggle-btn" data-age="teens">🧑‍🎓 Remaja</button>
                         </div>
                     </div>
-
-                    <!-- Game Container: River Defender -->
-                    <div class="arcade-game-wrapper" id="arcade-river-wrapper" style="display: none;">
-                        <div class="game-wrapper" style="max-width: 650px; margin: 0 auto;">
-                            <div class="glass-panel game-card" style="padding: 1.5rem; overflow: hidden; background: #ffffff;">
-                                <div class="game-top-bar" style="border-bottom: 3px solid #f1f5f9; padding-bottom: 0.8rem; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center;">
-                                    <div class="game-level-indicator" style="background: #e0f2fe; border: 2px solid #bae6fd; color: #0369a1; padding: 0.4rem 0.8rem; border-radius: 12px; font-weight: 800;">Skor: <span id="river-score">0</span></div>
-                                    <div class="game-lives" id="river-hp-bar" style="background: #fef2f2; border: 2px solid #fecaca; color: #ef4444; padding: 0.4rem 0.8rem; border-radius: 12px; font-weight: 800; display: flex; align-items: center; gap: 0.2rem;">Nyawa: ❤️❤️❤️</div>
-                                    <div class="game-progress" style="background: #f0fdf4; border: 2px solid #bbf7d0; color: #16a34a; padding: 0.4rem 0.8rem; border-radius: 12px; font-weight: 800;">Rekor: <span id="river-highscore">0</span></div>
-                                </div>
-
-                                <div class="game-play-area" id="river-play-area" style="position: relative; overflow: hidden; background: #bae6fd; height: 520px; border-radius: 16px; border: 4px solid #cbd5e1; box-shadow: inset 0 4px 10px rgba(0,0,0,0.1);">
-                                    
-                                    <!-- Canvas -->
-                                    <canvas id="river-canvas" width="600" height="520" style="display: block; width: 100%; height: 100%; image-rendering: auto;"></canvas>
-
-                                    <!-- Start Screen -->
-                                    <div id="screen-river-start" style="position: absolute; inset: 0; background: rgba(240, 253, 244, 0.95); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 2rem; z-index: 10; transition: opacity 0.3s ease;">
-                                        <div style="font-size: 4rem; margin-bottom: 0.5rem; animation: float 3s ease-in-out infinite;">🕸️</div>
-                                        <h3 style="font-family: var(--font-outfit); font-size: 1.8rem; font-weight: 800; color: var(--text-dark); margin-bottom: 0.5rem;">Penyelamat Sungai</h3>
-                                        <p style="font-size: 0.95rem; color: var(--text-muted); max-width: 450px; margin-bottom: 1.5rem; line-height: 1.5;">
-                                            Aliran sungai dipenuhi sampah plastik dan kaleng! Gerakkan jaring dengan menggeser <b>mouse</b> atau <b>sentuhan layar</b> untuk menangkap sampah sebelum mencapai laut bebas. Hati-hati, jika sampah lolos nyawamu berkurang!
-                                        </p>
-                                        <div style="display: flex; gap: 0.8rem; margin-bottom: 1.5rem; flex-wrap: wrap; justify-content: center;">
-                                            <span style="background: white; border: 2px solid #e2e8f0; border-radius: 20px; padding: 0.4rem 0.8rem; font-size: 0.85rem; font-weight: bold; display: flex; align-items: center; gap: 0.3rem; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">🧴 Botol</span>
-                                            <span style="background: white; border: 2px solid #e2e8f0; border-radius: 20px; padding: 0.4rem 0.8rem; font-size: 0.85rem; font-weight: bold; display: flex; align-items: center; gap: 0.3rem; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">🛍️ Kantong Plastik</span>
-                                            <span style="background: white; border: 2px solid #e2e8f0; border-radius: 20px; padding: 0.4rem 0.8rem; font-size: 0.85rem; font-weight: bold; display: flex; align-items: center; gap: 0.3rem; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">🥫 Kaleng Soda</span>
-                                        </div>
-                                        <button class="btn-hero-primary" id="btn-start-river" style="padding: 0.8rem 2rem; font-size: 1.1rem; border: none; cursor: pointer;">Mulai Menjaring! 🎮</button>
-                                    </div>
-
-                                    <!-- Game Over Screen -->
-                                    <div id="screen-river-gameover" style="position: absolute; inset: 0; background: rgba(254, 242, 242, 0.95); display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 2rem; z-index: 10; transition: opacity 0.3s ease;">
-                                        <div class="win-icon" style="background:#ffeaea; border-color:#ee5253; width: 80px; height: 80px; font-size: 2.5rem; display: flex; align-items: center; justify-content: center; border-radius: 50%; border: 3px dashed #ee5253; margin-bottom: 1rem; margin-top: 0;">💥</div>
-                                        <h3 class="game-win-title" style="color:#ee5253; font-family: var(--font-outfit); font-size: 1.8rem; font-weight: 800; margin-bottom: 0.5rem; border: none; background: none; padding: 0;">Sungai Tercemar!</h3>
-                                        <p class="game-win-desc" style="font-size: 1rem; color: var(--text-muted); max-width: 450px; margin-bottom: 1rem;">
-                                            Terlalu banyak sampah yang hanyut ke laut. Skor kamu adalah <b id="river-final-score" style="color: #ee5253; font-size: 1.3rem;">0</b>.
-                                        </p>
-                                        <div class="reward-display" id="river-reward-display" style="display: flex; gap: 1rem; margin-bottom: 1.5rem; justify-content: center;">
-                                            <div class="reward-pill" style="padding: 0.5rem 1rem; border-radius: 20px; background: #f0fdf4; border: 2px solid #86efac; font-weight: bold; display: flex; align-items: center; gap: 0.3rem;"><span class="reward-icon">⭐</span> +<span id="river-xp-reward">0</span> XP</div>
-                                            <div class="reward-pill" style="padding: 0.5rem 1rem; border-radius: 20px; background: #fef9c3; border: 2px solid #fef08a; font-weight: bold; display: flex; align-items: center; gap: 0.3rem;"><span class="reward-icon">🪙</span> +<span id="river-coins-reward">0</span> Koin</div>
-                                        </div>
-                                        <button class="btn-hero-primary" id="btn-restart-river" style="background:var(--fire-grad); box-shadow: 0 8px 20px var(--fire-glow); padding: 0.8rem 2rem; font-size: 1.1rem; border: none; cursor: pointer;">Coba Lagi 🔄</button>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Game Container: Quiz -->
-                    <div class="arcade-game-wrapper" id="arcade-quiz-wrapper" style="display: none;">
-                        <div class="glass-panel quiz-wrapper reveal" style="margin: 0 auto; max-width: 750px;">
-                            <!-- Welcome -->
-                            <div class="quiz-screen quiz-welcome active" id="quiz-screen-welcome">
-                                <div class="quiz-icon" id="quiz-mascot-avatar">
-                                    <!-- Dynamic Mascot SVG here -->
-                                </div>
-                                <h3>Uji Pengetahuan Lingkunganmu!</h3>
-                                <p>Bantu Lilo menjawab 5 teka-teki pemilahan sampah yang seru. Raih bintang penuh dan kumpulkan lencanamu! 🎉</p>
-                                <div class="quiz-features">
-                                    <div class="feature-pill">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
-                                        5 Teka-teki Seru
-                                    </div>
-                                    <div class="feature-pill">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                                        Hadiah Koin & XP!
-                                    </div>
-                                    <div class="feature-pill">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M12 2a6 6 0 0 1 6 6v3.2a6 6 0 0 1-2.14 4.54l-1.72 1.46c-.53.45-.85 1.1-.9 1.8H10.76c-.05-.7-.37-1.35-.9-1.8l-1.72-1.46A6 6 0 0 1 6 11.2V8a6 6 0 0 1 6-6z"/></svg>
-                                        Gelar Pahlawan
-                                    </div>
-                                </div>
-                                <button class="btn-hero-primary" id="btn-quiz-start">Mulai Main Kuis! 🎮</button>
-                            </div>
-
-                            <!-- Play -->
-                            <div class="quiz-screen" id="quiz-screen-play">
-                                <div class="quiz-header">
-                                    <span id="quiz-progress-text">Teka-teki 1 dari 5</span>
-                                    <div style="display:flex;align-items:center;gap:0.3rem;">
-                                        <span id="quiz-small-mascot"></span>
-                                        <span>Asisten Lilo</span>
-                                    </div>
-                                </div>
-                                <div class="quiz-progress-container">
-                                    <div class="quiz-progress-bar" id="quiz-progress-bar"></div>
-                                </div>
-                                <div class="quiz-question-box">
-                                    <div class="quiz-mascot-speech">
-                                        <div id="quiz-speak-mascot" style="flex-shrink:0;"></div>
-                                        <h4 id="quiz-question">Memuat teka-teki...</h4>
-                                    </div>
-                                </div>
-                                <div class="options-grid" id="quiz-options"></div>
-                                <div class="quiz-explanation" id="quiz-explanation">
-                                    <h5 id="explanation-title">Penjelasan</h5>
-                                    <p id="explanation-text"></p>
-                                </div>
-                                <div class="quiz-action-bar">
-                                    <button class="btn-quiz-next" id="btn-quiz-next">Soal Selanjutnya →</button>
-                                </div>
-                            </div>
-
-                            <!-- Results -->
-                            <div class="quiz-screen quiz-results" id="quiz-screen-results">
-                                <div class="score-radial">
-                                    <svg width="150" height="150" viewBox="0 0 160 160">
-                                        <circle class="bg" cx="80" cy="80" r="70"></circle>
-                                        <circle class="progress" id="result-circle" cx="80" cy="80" r="70"></circle>
-                                    </svg>
-                                    <div class="score-text">
-                                        <span class="score-num" id="result-score">0</span>
-                                        <span class="score-lbl">Nilai Akhir</span>
-                                    </div>
-                                </div>
-                                <div class="badge-box">
-                                    <h4 id="result-title">Gelar Pahlawan Cilik</h4>
-                                    <p id="result-desc">Deskripsi kepedulian lingkungan kamu.</p>
-                                </div>
-                                <div class="results-actions">
-                                    <button class="btn-hero-primary" id="btn-quiz-restart-results">Main Lagi 🎮</button>
-                                    <button class="btn-hero-secondary" id="btn-quiz-to-arcade" style="cursor: pointer; border: 2px solid var(--border-color); background: white;">Kembali ke Arcade</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
             </div>
+
+            <!-- Material Cards Grid Container -->
+            <div class="learning-grid reveal" id="learning-cards-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.8rem;">
+                <!-- Material cards will be rendered dynamically by JS -->
+            </div>
+
         </div>
     </section>
 
-    <!-- NEW SECTION: Achievements Gallery & Wardrobe Shop -->
+    <!-- Interactive Reader Modal / Workspace View -->
+    <div class="reader-modal-overlay" id="reader-modal" style="display: none;">
+        <div class="reader-modal-box">
+            
+            <!-- Reader Top Header Bar -->
+            <div class="reader-top-bar">
+                <div style="display: flex; align-items: center; gap: 0.8rem;">
+                    <span id="reader-category-icon" style="font-size: 1.5rem;">🌱</span>
+                    <div>
+                        <span id="reader-category-badge" class="reader-tag-pill">🌱 Pemilahan Sampah</span>
+                        <h3 id="reader-modal-title" style="margin: 0; font-family: var(--font-outfit); font-size: 1.2rem; font-weight: 800; color: var(--text-dark);">Judul Materi</h3>
+                    </div>
+                </div>
+
+                <div class="reader-actions" style="display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;">
+                    <!-- Audio Reader Toggle -->
+                    <button class="btn-reader-tool" id="btn-reader-audio" title="Dengarkan Suara (Audio Reader)">
+                        <span id="reader-audio-icon">🔊</span> <span style="font-size: 0.85rem; font-weight: 700;" id="reader-audio-text">Dengarkan</span>
+                    </button>
+                    <!-- Font Size Adjust -->
+                    <div style="display: flex; background: #f1f5f9; border-radius: 10px; border: 1px solid #cbd5e1; overflow: hidden;">
+                        <button class="btn-reader-size" id="btn-font-dec" title="Kecilkan Teks">Aa-</button>
+                        <button class="btn-reader-size" id="btn-font-inc" title="Besarkan Teks">Aa+</button>
+                    </div>
+                    <!-- Bookmark -->
+                    <button class="btn-reader-tool" id="btn-reader-bookmark" title="Simpan Bookmark">
+                        <span id="bookmark-icon">🔖</span>
+                    </button>
+                    <!-- Close -->
+                    <button class="btn-reader-close" id="btn-close-reader" title="Tutup Bacaan">
+                        ✕ Tutup
+                    </button>
+                </div>
+            </div>
+
+            <!-- Top Reading Progress Indicator -->
+            <div style="width: 100%; height: 5px; background: #e2e8f0; position: relative;">
+                <div id="reader-scroll-progress" style="width: 0%; height: 100%; background: linear-gradient(90deg, #22c55e, #38bdf8); transition: width 0.1s linear;"></div>
+            </div>
+
+            <!-- Reader Body Content Layout -->
+            <div class="reader-body">
+                
+                <!-- Left/Center Article Content -->
+                <div class="reader-article-main" id="reader-article-body">
+                    <!-- Dynamic Material Content injected by JS -->
+                </div>
+
+                <!-- Right Sidebar Companion -->
+                <div class="reader-sidebar">
+                    <!-- Mascot Floating Card -->
+                    <div class="glass-panel" style="padding: 1.2rem; border-radius: 18px; border: 2px solid #bbf7d0; background: #f0fdf4; margin-bottom: 1.2rem; text-align: center;">
+                        <div id="reader-mascot-container" style="width: 70px; height: 70px; margin: 0 auto 0.5rem;"></div>
+                        <h4 style="font-size: 0.95rem; font-weight: 800; color: var(--text-dark); margin: 0 0 0.3rem;">Teman Belajar Lilo 🍃</h4>
+                        <p id="reader-mascot-tip" style="font-size: 0.82rem; color: var(--text-muted); line-height: 1.45; margin: 0;">"Bacalah materi ini dengan teliti ya! Jawab kuis refleksi di bagian bawah untuk dapat 30 XP!"</p>
+                    </div>
+
+                    <!-- Meta Information Card -->
+                    <div class="glass-panel" style="padding: 1.2rem; border-radius: 18px; border: 2px solid #e2e8f0; background: #ffffff;">
+                        <h4 style="font-size: 0.9rem; font-weight: 800; color: var(--text-dark); margin: 0 0 0.8rem; display: flex; align-items: center; gap: 0.4rem;">
+                            <span>📊</span> Info Pembelajaran
+                        </h4>
+                        <div style="display: flex; flex-direction: column; gap: 0.6rem; font-size: 0.85rem; color: var(--text-muted);">
+                            <div style="display: flex; justify-content: space-between;">
+                                <span>Estimasi Baca:</span>
+                                <b id="reader-meta-time" style="color: var(--text-dark);">⏱️ 3 Menit</b>
+                            </div>
+                            <div style="display: flex; justify-content: space-between;">
+                                <span>Target Pembaca:</span>
+                                <b id="reader-meta-age" style="color: var(--text-dark);">👶 Anak-Anak</b>
+                            </div>
+                            <div style="display: flex; justify-content: space-between;">
+                                <span>Bonus Hadiah:</span>
+                                <b style="color: #16a34a;">⭐ 30 XP & 🪙 15 Koin</b>
+                            </div>
+                            <div style="display: flex; justify-content: space-between;">
+                                <span>Status Bacaan:</span>
+                                <b id="reader-meta-status" style="color: #ca8a04;">Belum Selesai</b>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Reader Footer Action Bar -->
+            <div class="reader-footer-bar">
+                <button class="btn-hero-secondary" id="btn-reader-prev" style="padding: 0.65rem 1.2rem; font-size: 0.9rem;">← Kembali ke Daftar</button>
+                <button class="btn-hero-primary" id="btn-complete-material" style="padding: 0.75rem 1.8rem; font-size: 0.95rem; border: none; cursor: pointer; display: flex; align-items: center; gap: 0.5rem;">
+                    <span>Tandai Selesai & Klaim Reward 🎉</span>
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- SECTION: Achievements Gallery & Wardrobe Shop -->
     <section class="section" id="koleksi" style="background: rgba(255, 255, 255, 0.45); border-top: 3px solid rgba(203, 213, 225, 0.6); border-bottom: 3px solid rgba(203, 213, 225, 0.6);">
         <div class="container">
             <div class="section-header reveal">
-                <span class="section-tag">Prestasi & Toko</span>
-                <h2 class="section-title">Galeri Lencana & Wardrobe Lilo</h2>
-                <p class="section-desc">Lihat semua lencana penghargaan pemilahan yang telah kamu kumpulkan, dan belanjakan koinmu untuk mendandani Lilo!</p>
+                <span class="section-tag" style="background: #f0fdf4; color: #15803d; border: 1.5px solid #bbf7d0;">Prestasi & Toko</span>
+                <h2 class="section-title">Galeri Lencana & Lemari Baju Lilo 👕</h2>
+                <p class="section-desc">Buka lencana kebanggaan dari aktivitas membaca & kuis, lalu kumpulkan koin untuk mendandani Lilo dengan kostum impianmu!</p>
             </div>
 
-            <div class="dashboard-grid reveal">
-                <!-- Left Column: Badges Grid (Prestasi) -->
-                <div class="glass-panel profile-card" style="padding: 2.5rem;">
-                    <h3 style="font-size:1.6rem; font-weight:800; color:var(--text-dark); margin-bottom:1.5rem; display:flex; align-items:center; gap:0.6rem;">
-                        <span>🏅</span> Galeri Lencana Pahlawan
-                    </h3>
-                    <p style="font-size:0.95rem; color:var(--text-muted); margin-bottom:2rem;">Setiap lencana mencerminkan kontribusi nyatamu dalam membersihkan lingkungan. Lencana yang belum terbuka akan tampil redup.</p>
-                    
-                    <div class="badges-grid-dashboard">
-                        <!-- Badge items -->
-                        <div class="badge-item locked" id="badge-rookie">
-                            <div class="badge-icon">🌱</div>
-                            <div class="badge-name">Pilah Pemula</div>
-                            <div class="badge-tooltip">Pilah Pemula: Kumpulkan minimal 50 XP hasil memilah sampah.</div>
+            <div class="koleksi-grid reveal" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 2rem; align-items: stretch;">
+                
+                <!-- Card 1: Galeri Lencana Pahlawan -->
+                <div class="glass-panel koleksi-card" style="padding: 2rem; border-radius: 24px; border: 3px solid #86efac; background: rgba(255,255,255,0.9); backdrop-filter: blur(12px); display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 10px 30px rgba(0,0,0,0.04);">
+                    <div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 2px dashed #cbd5e1; padding-bottom: 1rem;">
+                            <h3 style="font-size: 1.35rem; font-weight: 800; color: var(--text-dark); margin: 0; display: flex; align-items: center; gap: 0.6rem;">
+                                <span>🏅</span> Galeri Lencana Pahlawan
+                            </h3>
+                            <div class="stat-pill" style="border-color: #86efac; background: #f0fdf4; color: #15803d; padding: 0.35rem 0.8rem; font-size: 0.82rem;">
+                                <span>⭐ Terbuka:</span> <b id="badge-unlocked-count">0</b>/6
+                            </div>
                         </div>
-                        <div class="badge-item locked" id="badge-coins">
-                            <div class="badge-icon">💰</div>
-                            <div class="badge-name">Kolektor Koin</div>
-                            <div class="badge-tooltip">Kolektor Koin: Kumpulkan minimal 50 Koin.</div>
+                        
+                        <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 1.2rem; line-height: 1.5;">Buka lencana pahlawan lingkungan dari membaca materi & kuis! Sentuh lencana untuk melihat syarat pemicunya.</p>
+
+                        <!-- Sub-banner Progress Highlight -->
+                        <div style="display: flex; gap: 1rem; align-items: center; background: #f0fdf4; padding: 0.8rem 1rem; border-radius: 16px; border: 1.5px solid #bbf7d0; margin-bottom: 1.2rem;">
+                            <div style="width: 54px; height: 54px; flex-shrink: 0; background: #dcfce7; border-radius: 50%; border: 2px solid #86efac; display: flex; align-items: center; justify-content: center; font-size: 1.6rem;">
+                                🎖️
+                            </div>
+                            <div style="flex: 1;">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <h4 id="badge-rank-title" style="font-size: 0.95rem; font-weight: 800; color: var(--text-dark); margin: 0;">Pahlawan Pemula</h4>
+                                    <span style="font-size: 0.78rem; font-weight: 800; color: #16a34a;" id="badge-pct-text">0% Terkumpul</span>
+                                </div>
+                                <div style="width: 100%; height: 8px; background: #dcfce7; border-radius: 10px; overflow: hidden; margin-top: 0.4rem;">
+                                    <div id="badge-progress-bar-fill" style="width: 0%; height: 100%; background: linear-gradient(90deg, #4ade80, #22c55e); border-radius: 10px; transition: width 0.3s ease;"></div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="badge-item locked" id="badge-organic">
-                            <div class="badge-icon">🥗</div>
-                            <div class="badge-name">Ahli Organik</div>
-                            <div class="badge-tooltip">Ahli Organik: Pilah 10 sampah Organik dengan benar.</div>
-                        </div>
-                        <div class="badge-item locked" id="badge-hazardous">
-                            <div class="badge-icon">💀</div>
-                            <div class="badge-name">Pahlawan B3</div>
-                            <div class="badge-tooltip">Pahlawan B3: Pilah 5 sampah B3 dengan benar.</div>
-                        </div>
-                        <div class="badge-item locked" id="badge-master">
-                            <div class="badge-icon">👑</div>
-                            <div class="badge-name">Master Pemilah</div>
-                            <div class="badge-tooltip">Master Pemilah: Selesaikan level tertinggi (Level 5).</div>
-                        </div>
-                        <div class="badge-item locked" id="badge-perfect">
-                            <div class="badge-icon">⚡</div>
-                            <div class="badge-name">Penyelamat Sempurna</div>
-                            <div class="badge-tooltip">Penyelamat Sempurna: Selesaikan satu level dengan nyawa penuh.</div>
+
+                        <div class="badges-grid-dashboard" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.9rem;">
+                            <!-- Badge items -->
+                            <div class="badge-item locked" id="badge-rookie">
+                                <div class="badge-icon">🌱</div>
+                                <div class="badge-name">Pembaca Pemula</div>
+                                <div class="badge-tooltip">Pembaca Pemula: Selesaikan 1 materi pembelajaran pertama.</div>
+                            </div>
+                            <div class="badge-item locked" id="badge-coins">
+                                <div class="badge-icon">💰</div>
+                                <div class="badge-name">Kolektor Koin</div>
+                                <div class="badge-tooltip">Kolektor Koin: Kumpulkan minimal 50 Koin.</div>
+                            </div>
+                            <div class="badge-item locked" id="badge-organic">
+                                <div class="badge-icon">🥗</div>
+                                <div class="badge-name">Ahli Organik</div>
+                                <div class="badge-tooltip">Ahli Organik: Selesaikan bacaan materi Pemilahan & Kompos.</div>
+                            </div>
+                            <div class="badge-item locked" id="badge-hazardous">
+                                <div class="badge-icon">📚</div>
+                                <div class="badge-name">Kutu Buku Eco</div>
+                                <div class="badge-tooltip">Kutu Buku Eco: Selesaikan 3 materi pembelajaran.</div>
+                            </div>
+                            <div class="badge-item locked" id="badge-master">
+                                <div class="badge-icon">👑</div>
+                                <div class="badge-name">Master EcoLearn</div>
+                                <div class="badge-tooltip">Master EcoLearn: Selesaikan seluruh 6 materi pembelajaran.</div>
+                            </div>
+                            <div class="badge-item locked" id="badge-perfect">
+                                <div class="badge-icon">⚡</div>
+                                <div class="badge-name">Bintang Literasi</div>
+                                <div class="badge-tooltip">Bintang Literasi: Jawab kuis refleksi materi dengan tepat!</div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Right Column: Lilo Costume Shop (Toko) -->
-                <div class="glass-panel profile-card" style="padding: 2.5rem;">
-                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; flex-wrap:wrap; gap:0.5rem;">
-                        <h3 style="font-size:1.6rem; font-weight:800; color:var(--text-dark); display:flex; align-items:center; gap:0.6rem; margin:0;">
-                            <span>🛍️</span> Lemari Baju Lilo
-                        </h3>
-                        <div class="stat-pill" style="border-color:#fef08a; background:#fef9c3; color:#854d0e; padding: 0.4rem 1rem;">
-                            <span>🪙</span> <span id="shop-coins-val" style="font-weight:800;">0</span> <span style="font-size:0.75rem; color:#854d0e;">Koin</span>
+                <!-- Card 2: Lilo Wardrobe Shop -->
+                <div class="glass-panel koleksi-card" style="padding: 2rem; border-radius: 24px; border: 3px solid #fef08a; background: rgba(255,255,255,0.9); backdrop-filter: blur(12px); display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 10px 30px rgba(0,0,0,0.04);">
+                    <div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 2px dashed #cbd5e1; padding-bottom: 1rem;">
+                            <h3 style="font-size: 1.35rem; font-weight: 800; color: var(--text-dark); margin: 0; display: flex; align-items: center; gap: 0.6rem;">
+                                <span>🛍️</span> Lemari Baju Lilo
+                            </h3>
+                            <div class="stat-pill" style="border-color: #fef08a; background: #fef9c3; color: #854d0e; padding: 0.35rem 0.8rem; font-size: 0.82rem;">
+                                <span>🪙 Koin:</span> <b id="shop-coins-val">0</b>
+                            </div>
                         </div>
-                    </div>
-                    
-                    <div style="display:flex; gap:1.5rem; align-items:center; margin-bottom:2rem; border-bottom:2px solid #e2e8f0; padding-bottom:1.5rem;">
-                        <div class="profile-avatar-container" id="profile-mascot-avatar" style="width:85px; height:85px; flex-shrink:0;">
-                            <!-- Dynamic SVG -->
-                        </div>
-                        <div>
-                            <h4 id="player-title" style="font-size:1.3rem; font-weight:800; color:var(--text-dark); margin:0;">Pahlawan Pemilah</h4>
-                            <p style="font-size:0.95rem; color:var(--text-muted); margin-top:0.3rem; margin-bottom:0;">XP Akumulasi: <b id="player-xp-val" style="color:var(--primary-dark);">0</b> XP</p>
-                        </div>
-                    </div>
 
-                    <div class="shop-items-list">
-                        <!-- Item list for Lilo Costumes -->
-                        <div class="shop-item-card purchased equipped" id="shop-item-default" data-costume="default">
-                            <div class="shop-item-preview">🥬</div>
-                            <div class="shop-item-info">
-                                <h4>Lilo Daun</h4>
-                                <p>Tampilan asli Lilo si daun hijau.</p>
-                                <span class="shop-item-price">GRATIS</span>
+                        <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 1.2rem; line-height: 1.5;">Tukarkan koin dari membaca materi & kuis untuk mendandani Lilo dengan kostum impianmu!</p>
+
+                        <!-- Current Mascot Preview Bar -->
+                        <div style="display: flex; gap: 1rem; align-items: center; background: #fdf6b2; padding: 0.8rem 1rem; border-radius: 16px; border: 1.5px solid #fef08a; margin-bottom: 1.2rem;">
+                            <div class="profile-avatar-container" id="profile-mascot-avatar" style="width: 54px; height: 54px; flex-shrink: 0; border: 2px solid #eab308; background: white; border-radius: 50%;">
+                                <!-- Dynamic SVG -->
                             </div>
-                            <button class="btn-shop-action" disabled>Dipakai</button>
+                            <div>
+                                <h4 id="player-title" style="font-size: 0.95rem; font-weight: 800; color: var(--text-dark); margin: 0;">Pahlawan Pemilah</h4>
+                                <p style="font-size: 0.82rem; color: #854d0e; margin-top: 0.2rem; margin-bottom: 0;">Total XP: <b id="player-xp-val" style="color: var(--primary-dark);">0</b> XP</p>
+                            </div>
                         </div>
-                        <div class="shop-item-card locked-costume" id="shop-item-chef" data-costume="chef" data-price="30">
-                            <div class="shop-item-preview">🧑‍🍳</div>
-                            <div class="shop-item-info">
-                                <h4>Lilo Koki</h4>
-                                <p>Dilengkapi topi koki yang imut.</p>
-                                <span class="shop-item-price">🪙 30 Koin</span>
+
+                        <!-- Costume Grid (2x2) -->
+                        <div class="costumes-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.9rem;">
+                            
+                            <!-- Costume Item 1 -->
+                            <div class="shop-item-card purchased equipped" id="shop-item-default" data-costume="default">
+                                <div class="shop-item-preview" style="font-size: 2rem;">🥬</div>
+                                <div class="shop-item-info">
+                                    <h4 style="font-size: 0.88rem; font-weight: 800; margin-bottom: 0.2rem;">Lilo Daun</h4>
+                                    <span class="shop-item-price" style="font-size: 0.75rem; font-weight: 800; color: #16a34a;">GRATIS</span>
+                                </div>
+                                <button class="btn-shop-action" disabled style="width: 100%; font-size: 0.8rem; padding: 0.35rem 0.6rem;">Dipakai</button>
                             </div>
-                            <button class="btn-shop-action btn-buy">Beli</button>
-                        </div>
-                        <div class="shop-item-card locked-costume" id="shop-item-astronaut" data-costume="astronaut" data-price="60">
-                            <div class="shop-item-preview">👨‍🚀</div>
-                            <div class="shop-item-info">
-                                <h4>Lilo Astronaut</h4>
-                                <p>Helm kaca untuk petualangan kosmis.</p>
-                                <span class="shop-item-price">🪙 60 Koin</span>
+
+                            <!-- Costume Item 2 -->
+                            <div class="shop-item-card locked-costume" id="shop-item-chef" data-costume="chef" data-price="30">
+                                <div class="shop-item-preview" style="font-size: 2rem;">🧑‍🍳</div>
+                                <div class="shop-item-info">
+                                    <h4 style="font-size: 0.88rem; font-weight: 800; margin-bottom: 0.2rem;">Lilo Koki</h4>
+                                    <span class="shop-item-price" style="font-size: 0.75rem; font-weight: 800; color: #854d0e;">🪙 30 Koin</span>
+                                </div>
+                                <button class="btn-shop-action btn-buy" style="width: 100%; font-size: 0.8rem; padding: 0.35rem 0.6rem;">Beli</button>
                             </div>
-                            <button class="btn-shop-action btn-buy">Beli</button>
-                        </div>
-                        <div class="shop-item-card locked-costume" id="shop-item-king" data-costume="king" data-price="100">
-                            <div class="shop-item-preview">👑</div>
-                            <div class="shop-item-info">
-                                <h4>Lilo Raja</h4>
-                                <p>Mahkota emas berkilau pahlawan.</p>
-                                <span class="shop-item-price">🪙 100 Koin</span>
+
+                            <!-- Costume Item 3 -->
+                            <div class="shop-item-card locked-costume" id="shop-item-astronaut" data-costume="astronaut" data-price="60">
+                                <div class="shop-item-preview" style="font-size: 2rem;">👨‍🚀</div>
+                                <div class="shop-item-info">
+                                    <h4 style="font-size: 0.88rem; font-weight: 800; margin-bottom: 0.2rem;">Lilo Astronaut</h4>
+                                    <span class="shop-item-price" style="font-size: 0.75rem; font-weight: 800; color: #854d0e;">🪙 60 Koin</span>
+                                </div>
+                                <button class="btn-shop-action btn-buy" style="width: 100%; font-size: 0.8rem; padding: 0.35rem 0.6rem;">Beli</button>
                             </div>
-                            <button class="btn-shop-action btn-buy">Beli</button>
+
+                            <!-- Costume Item 4 -->
+                            <div class="shop-item-card locked-costume" id="shop-item-king" data-costume="king" data-price="100">
+                                <div class="shop-item-preview" style="font-size: 2rem;">👑</div>
+                                <div class="shop-item-info">
+                                    <h4 style="font-size: 0.88rem; font-weight: 800; margin-bottom: 0.2rem;">Lilo Raja</h4>
+                                    <span class="shop-item-price" style="font-size: 0.75rem; font-weight: 800; color: #854d0e;">🪙 100 Koin</span>
+                                </div>
+                                <button class="btn-shop-action btn-buy" style="width: 100%; font-size: 0.8rem; padding: 0.35rem 0.6rem;">Beli</button>
+                            </div>
+
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </section>
 
-    <!-- Quiz Section merged into Eco Arcade above -->
+    <!-- NEW SECTION: Leaderboard Papan Peringkat -->
+    <section class="section" id="peringkat" style="background: linear-gradient(135deg, rgba(240, 253, 244, 0.4) 0%, rgba(224, 242, 254, 0.4) 100%); border-top: 3px solid rgba(187, 247, 208, 0.6); border-bottom: 3px solid rgba(187, 247, 208, 0.6);">
+        <div class="container">
+            <div class="section-header reveal">
+                <span class="section-tag" style="background: #fef9c3; color: #854d0e; border: 1.5px solid #fef08a;">Pahlawan Terbaik</span>
+                <h2 class="section-title">Papan Peringkat Eco 🏆</h2>
+                <p class="section-desc">Kumpulkan bintang XP sebanyak-banyaknya dengan membaca materi dan menyelesaikan kuis untuk memanjat tangga lagu Pahlawan Eco!</p>
+            </div>
+
+            <!-- Top 3 Podium Cards -->
+            <div class="podium-container reveal" id="leaderboard-podium-container" style="display: flex; justify-content: center; align-items: flex-end; gap: 1.2rem; margin-bottom: 2.5rem; flex-wrap: wrap;">
+                <!-- Rendered dynamically by JS -->
+            </div>
+
+            <!-- Leaderboard List Table -->
+            <div class="glass-panel leaderboard-card reveal" style="padding: 1.8rem; border-radius: 24px; border: 3px solid #cbd5e1; background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(12px); max-width: 850px; margin: 0 auto; box-shadow: 0 10px 30px rgba(0,0,0,0.04);">
+                
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.2rem; border-bottom: 2px dashed #cbd5e1; padding-bottom: 0.8rem;">
+                    <h3 style="font-family: var(--font-outfit); font-size: 1.2rem; font-weight: 800; color: var(--text-dark); margin: 0; display: flex; align-items: center; gap: 0.5rem;">
+                        <span>📊</span> Klasemen Peringkat XP
+                    </h3>
+                    <span style="font-size: 0.82rem; font-weight: 700; color: #16a34a; background: #f0fdf4; border: 1px solid #86efac; padding: 0.3rem 0.8rem; border-radius: 12px;" id="user-rank-status-pill">Peringkat Kamu: #--</span>
+                </div>
+
+                <div class="leaderboard-list-table" id="leaderboard-list-container" style="display: flex; flex-direction: column; gap: 0.6rem;">
+                    <!-- Rendered dynamically by JS -->
+                </div>
+
+            </div>
+        </div>
+    </section>
 
     <!-- Explanation Modal for wrong sorting -->
     <div class="modal-overlay" id="explanation-modal" role="dialog" aria-modal="true">
@@ -582,8 +518,9 @@
                     <h4>Navigasi</h4>
                     <ul class="footer-nav">
                         <li><a href="#beranda">Beranda</a></li>
-                        <li><a href="#eco-arcade">Eco Arcade</a></li>
-                        <li><a href="#koleksi">Koleksi & Toko</a></li>
+                        <li><a href="#modul-belajar">Modul Belajar 📚</a></li>
+                        <li><a href="#koleksi">Koleksi & Toko 👕</a></li>
+                        <li><a href="#peringkat">Peringkat 🏆</a></li>
                     </ul>
                 </div>
                 <div class="footer-column">
