@@ -135,12 +135,12 @@ function loadPlayerState() {
     if (saved) {
         try {
             const parsed = JSON.parse(saved);
-            playerState = { 
+            playerState = {
                 completedMaterials: [],
                 bookmarkedMaterials: [],
                 quizPerfect: false,
                 ...playerState,
-                ...parsed 
+                ...parsed
             };
         } catch (e) {
             console.error("Error loading player state", e);
@@ -204,31 +204,31 @@ function getLiloMascotHtml(costume = 'default', width = 60, height = 60) {
 
 function renderAllMascots() {
     const activeCostume = playerState.activeCostume;
-    
+
     // 1. Hero
     const heroContainer = document.getElementById('hero-mascot-container');
     if (heroContainer) heroContainer.innerHTML = getLiloMascotHtml(activeCostume, 65, 65);
-    
+
     // 2. Profile Avatar
     const profileAvatar = document.getElementById('profile-mascot-avatar');
     if (profileAvatar) profileAvatar.innerHTML = getLiloMascotHtml(activeCostume, 75, 75);
-    
+
     // 3. Start game preview
     const startPreview = document.getElementById('mascot-preview-start');
     if (startPreview) startPreview.innerHTML = getLiloMascotHtml(activeCostume, 100, 100);
-    
+
     // 4. Quiz welcome
     const quizAvatar = document.getElementById('quiz-mascot-avatar');
     if (quizAvatar) quizAvatar.innerHTML = getLiloMascotHtml(activeCostume, 80, 80);
-    
+
     // 5. Quiz small header
     const quizSmallMascot = document.getElementById('quiz-small-mascot');
     if (quizSmallMascot) quizSmallMascot.innerHTML = getLiloMascotHtml(activeCostume, 30, 30);
-    
+
     // 6. Quiz speak mascot
     const quizSpeakMascot = document.getElementById('quiz-speak-mascot');
     if (quizSpeakMascot) quizSpeakMascot.innerHTML = getLiloMascotHtml(activeCostume, 55, 55);
-    
+
     // 7. Update River Defender Lilo Image
     if (typeof updateRiverLiloImage === 'function') {
         updateRiverLiloImage();
@@ -250,7 +250,7 @@ function updateProfileUI() {
     if (shopCoins) shopCoins.textContent = playerState.coins;
     const xpVal = document.getElementById('player-xp-val');
     if (xpVal) xpVal.textContent = playerState.xp;
-    
+
     // Level title designation
     const titleEl = document.getElementById('player-title');
     if (titleEl) {
@@ -275,9 +275,9 @@ function updateShopItemsUI() {
         const card = document.getElementById(`shop-item-${cos}`);
         if (!card) return;
         const btn = card.querySelector('.btn-shop-action');
-        
+
         card.classList.remove('equipped', 'purchased', 'locked-costume');
-        
+
         if (playerState.activeCostume === cos) {
             card.classList.add('equipped');
             btn.textContent = 'Dipakai';
@@ -306,7 +306,7 @@ function checkBadges() {
         { id: 'badge-master', check: () => completed.length >= 6 },
         { id: 'badge-perfect', check: () => playerState.quizPerfect === true }
     ];
-    
+
     let unlockedCount = 0;
     badges.forEach(b => {
         const el = document.getElementById(b.id);
@@ -391,7 +391,7 @@ function renderLeaderboard() {
     }
 
     const top3 = allPlayers.slice(0, 3);
-    
+
     let podiumHtml = '';
     const podiumOrder = [
         { rank: 2, data: top3[1], crown: '🥈', class: 'rank-2' },
@@ -404,7 +404,7 @@ function renderLeaderboard() {
         const p = item.data;
         const isUserClass = p.isUser ? 'is-user-podium' : '';
         const nameDisplay = p.isUser ? 'Kamu 🌟' : p.name;
-        
+
         let avatarContent = '';
         if (p.costume) {
             avatarContent = getLiloMascotHtml(p.costume, 54, 54);
@@ -471,7 +471,7 @@ function initCostumeShop() {
             const card = btn.closest('.shop-item-card');
             const costume = card.dataset.costume;
             const price = parseInt(card.dataset.price) || 0;
-            
+
             if (playerState.purchasedCostumes.includes(costume)) {
                 // Equip
                 playerState.activeCostume = costume;
@@ -527,23 +527,23 @@ function initGameControls() {
     const btnRetry = document.getElementById('btn-retry-game');
     const explanationCloseBtn = document.getElementById('explanation-modal-close');
     const explanationCloseOk = document.getElementById('btn-close-explanation');
-    
+
     btnStart.addEventListener('click', () => {
         const levelSelect = document.getElementById('level-select');
         const level = parseInt(levelSelect.value);
         startTrashSortingGame(level);
     });
-    
+
     btnNext.addEventListener('click', () => {
         const nextLvl = Math.min(5, currentLevel + 1);
         document.getElementById('level-select').value = nextLvl;
         startTrashSortingGame(nextLvl);
     });
-    
+
     btnReplay.addEventListener('click', () => {
         startTrashSortingGame(currentLevel);
     });
-    
+
     btnRetry.addEventListener('click', () => {
         startTrashSortingGame(currentLevel);
     });
@@ -555,7 +555,7 @@ function initGameControls() {
             endGame(false);
         }
     };
-    
+
     explanationCloseBtn.addEventListener('click', closeExplanation);
     explanationCloseOk.addEventListener('click', closeExplanation);
 }
@@ -568,7 +568,7 @@ function showGameScreen(screenId) {
 function startTrashSortingGame(level) {
     currentLevel = level;
     const config = levelConfig[level];
-    
+
     gameLives = 3;
     gameScore = 0;
     gameTarget = config.target;
@@ -578,21 +578,21 @@ function startTrashSortingGame(level) {
     isGameActive = true;
     isLevelPaused = false;
     selectedTrashEl = null;
-    
+
     // Update Header HUD
     document.getElementById('game-current-level').textContent = level;
     document.getElementById('game-score-count').textContent = gameScore;
     document.getElementById('game-target-count').textContent = gameTarget;
     updateLivesDisplay();
-    
+
     // Clear canvas
     const canvas = document.getElementById('game-canvas-area');
     canvas.innerHTML = '';
-    
+
     // Generate Bins dynamically
     const binsContainer = document.getElementById('bins-container');
     binsContainer.innerHTML = '';
-    
+
     activeBins.forEach(binType => {
         const info = binInfo[binType];
         const binEl = document.createElement('div');
@@ -602,20 +602,20 @@ function startTrashSortingGame(level) {
             <div class="bin-emoji">${info.emoji}</div>
             <div style="font-size: 0.85rem; font-weight:800;">${info.label}</div>
         `;
-        
+
         // Drag Over listeners for drag and drop
         binEl.addEventListener('dragover', (e) => e.preventDefault());
-        
+
         // Tap sorting listener
         binEl.addEventListener('click', () => {
             if (selectedTrashEl) {
                 flyToBinAndSort(selectedTrashEl, binEl, binType);
             }
         });
-        
+
         binsContainer.appendChild(binEl);
     });
-    
+
     // Setup falling game loop
     if (gameInterval) clearInterval(gameInterval);
     gameInterval = setInterval(() => {
@@ -623,10 +623,10 @@ function startTrashSortingGame(level) {
             spawnTrashItem();
         }
     }, spawnRate);
-    
+
     if (gameAnimId) cancelAnimationFrame(gameAnimId);
     updatePhysicsLoop();
-    
+
     showGameScreen('screen-game-playing');
 }
 
@@ -638,14 +638,14 @@ function updateLivesDisplay() {
 function spawnTrashItem() {
     const canvas = document.getElementById('game-canvas-area');
     const width = canvas.offsetWidth;
-    
+
     // Determine categories available
     const config = levelConfig[currentLevel];
     const category = config.bins[Math.floor(Math.random() * config.bins.length)];
-    
+
     let itemData;
     let isSimilar = false;
-    
+
     // 30% chance of spawning similar/confusing item in Level 5
     if (config.spawnSimilar && Math.random() < 0.35) {
         const pool = trashItems.similar;
@@ -655,14 +655,14 @@ function spawnTrashItem() {
         const pool = trashItems[category];
         itemData = pool[Math.floor(Math.random() * pool.length)];
     }
-    
+
     const trashEl = document.createElement('div');
     trashEl.className = 'falling-trash';
     trashEl.innerHTML = `
         <span class="trash-emoji">${itemData.emoji}</span>
         <span class="trash-label">${itemData.label}</span>
     `;
-    
+
     // Set parameters
     trashEl.dataset.falling = 'true';
     trashEl.dataset.isSimilar = isSimilar ? 'true' : 'false';
@@ -671,23 +671,23 @@ function spawnTrashItem() {
     if (isSimilar) {
         trashEl.dataset.explanation = itemData.explanation;
     }
-    
+
     // Spawn X position
     const size = 70;
     const xPos = Math.random() * (width - size);
     trashEl.style.left = `${xPos}px`;
     trashEl.style.top = `-80px`;
-    
+
     // Drag listeners via PointerEvents
     initPointerDragging(trashEl);
-    
+
     // Tap to select listener
     trashEl.addEventListener('click', (e) => {
         e.stopPropagation(); // prevent resetting select on canvas click
         if (selectedTrashEl) {
             selectedTrashEl.classList.remove('selected');
         }
-        
+
         if (selectedTrashEl === trashEl) {
             selectedTrashEl = null;
         } else {
@@ -695,7 +695,7 @@ function spawnTrashItem() {
             selectedTrashEl = trashEl;
         }
     });
-    
+
     canvas.appendChild(trashEl);
 }
 
@@ -709,48 +709,48 @@ function initPointerDragging(el) {
         activeDragged = el;
         el.dataset.falling = 'false';
         el.classList.add('dragging');
-        
+
         // Remove active tap selection if any
         if (selectedTrashEl) {
             selectedTrashEl.classList.remove('selected');
             selectedTrashEl = null;
         }
-        
+
         const rect = el.getBoundingClientRect();
         pointerOffsetX = e.clientX - rect.left;
         pointerOffsetY = e.clientY - rect.top;
-        
+
         // Highlight active targets
         const correct = el.dataset.correctBin;
-        
+
         const moveHandler = (moveEvt) => {
             if (activeDragged !== el) return;
             const canvas = document.getElementById('game-canvas-area');
             const canvasRect = canvas.getBoundingClientRect();
-            
+
             let x = moveEvt.clientX - canvasRect.left - pointerOffsetX;
             let y = moveEvt.clientY - canvasRect.top - pointerOffsetY;
-            
+
             const maxLeft = canvasRect.width - el.offsetWidth;
             const maxTop = canvasRect.height - el.offsetHeight;
-            
+
             x = Math.max(0, Math.min(x, maxLeft));
             y = Math.max(0, Math.min(y, maxTop));
-            
+
             el.style.left = `${x}px`;
             el.style.top = `${y}px`;
-            
+
             checkBinOverlaps(el);
         };
-        
+
         const upHandler = (upEvt) => {
             window.removeEventListener('pointermove', moveHandler);
             window.removeEventListener('pointerup', upHandler);
-            
+
             if (activeDragged !== el) return;
             activeDragged = null;
             el.classList.remove('dragging');
-            
+
             const binType = getOverlappedBin(el);
             if (binType) {
                 sortTrashItem(el, binType);
@@ -758,7 +758,7 @@ function initPointerDragging(el) {
                 el.dataset.falling = 'true';
             }
         };
-        
+
         window.addEventListener('pointermove', moveHandler);
         window.addEventListener('pointerup', upHandler);
     });
@@ -767,7 +767,7 @@ function initPointerDragging(el) {
 function checkBinOverlaps(el) {
     const bins = document.querySelectorAll('.trash-bin');
     const elRect = el.getBoundingClientRect();
-    
+
     bins.forEach(bin => {
         const binRect = bin.getBoundingClientRect();
         const overlapping = !(
@@ -776,7 +776,7 @@ function checkBinOverlaps(el) {
             elRect.bottom < binRect.top ||
             elRect.top > binRect.bottom
         );
-        
+
         if (overlapping) {
             bin.classList.add('drag-over');
         } else {
@@ -789,7 +789,7 @@ function getOverlappedBin(el) {
     const bins = document.querySelectorAll('.trash-bin');
     const elRect = el.getBoundingClientRect();
     let foundBin = null;
-    
+
     bins.forEach(bin => {
         const binRect = bin.getBoundingClientRect();
         const overlapping = !(
@@ -798,13 +798,13 @@ function getOverlappedBin(el) {
             elRect.bottom < binRect.top ||
             elRect.top > binRect.bottom
         );
-        
+
         if (overlapping) {
             foundBin = bin.dataset.binType;
         }
         bin.classList.remove('drag-over');
     });
-    
+
     return foundBin;
 }
 
@@ -813,20 +813,20 @@ function flyToBinAndSort(trashEl, binEl, binType) {
     trashEl.dataset.falling = 'false';
     trashEl.classList.remove('selected');
     selectedTrashEl = null;
-    
+
     const canvas = document.getElementById('game-canvas-area');
     const canvasRect = canvas.getBoundingClientRect();
     const binRect = binEl.getBoundingClientRect();
-    
+
     const targetX = binRect.left - canvasRect.left + (binRect.width / 2) - (trashEl.offsetWidth / 2);
     const targetY = binRect.top - canvasRect.top + 10;
-    
+
     trashEl.style.transition = 'all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
     trashEl.style.left = `${targetX}px`;
     trashEl.style.top = `${targetY}px`;
     trashEl.style.transform = 'scale(0.3) rotate(45deg)';
     trashEl.style.opacity = '0.5';
-    
+
     setTimeout(() => {
         sortTrashItem(trashEl, binType);
     }, 310);
@@ -836,26 +836,26 @@ function sortTrashItem(el, binType) {
     const correctBin = el.dataset.correctBin;
     const isSimilar = el.dataset.isSimilar === 'true';
     const label = el.dataset.label;
-    
+
     if (binType === correctBin) {
         // Correct Sort
         gameScore++;
         document.getElementById('game-score-count').textContent = gameScore;
-        
+
         // Counter increment
         if (correctBin === 'organic') playerState.organicCount++;
         if (correctBin === 'hazard') playerState.hazardCount++;
-        
+
         playerState.xp += 10;
         playerState.coins += 5;
         savePlayerState();
         updateProfileUI();
         checkBadges();
-        
+
         // Little burst confetti
         triggerLocalConfettiBurst();
         el.remove();
-        
+
         if (gameScore >= gameTarget) {
             endGame(true);
         }
@@ -870,12 +870,12 @@ function sortTrashItem(el, binType) {
             // Standard wrong splat
             gameLives--;
             updateLivesDisplay();
-            
+
             el.innerHTML = '<span style="font-size:2.5rem;">❌</span>';
             el.style.borderColor = '#ef4444';
             el.style.background = '#fef2f2';
             el.dataset.falling = 'false';
-            
+
             setTimeout(() => {
                 el.remove();
                 if (gameLives <= 0) {
@@ -890,10 +890,10 @@ function showMistakeExplanation(label, correctBin, text) {
     isLevelPaused = true;
     gameLives--;
     updateLivesDisplay();
-    
+
     const modalContent = document.getElementById('explanation-modal-content');
     const binColorTag = binInfo[correctBin].emoji + ' ' + binInfo[correctBin].label;
-    
+
     modalContent.innerHTML = `
         Kamu meletakkan <b>${label}</b> di tempat yang kurang tepat. Nyawa berkurang 1.
         <br><br>
@@ -903,7 +903,7 @@ function showMistakeExplanation(label, correctBin, text) {
         <br><br>
         Benda ini harusnya masuk ke: <b style="font-size: 1.25rem;">${binColorTag}</b>
     `;
-    
+
     document.getElementById('explanation-modal').classList.add('active');
 }
 
@@ -911,11 +911,11 @@ function triggerSplat(el) {
     el.dataset.falling = 'false';
     gameLives--;
     updateLivesDisplay();
-    
+
     el.innerHTML = '<span style="font-size:2.2rem;">💥</span>';
     el.style.borderColor = '#ea580c';
     el.style.background = '#ffedd5';
-    
+
     setTimeout(() => {
         el.remove();
         if (gameLives <= 0) {
@@ -926,18 +926,18 @@ function triggerSplat(el) {
 
 function updatePhysicsLoop() {
     if (!isGameActive) return;
-    
+
     if (!isLevelPaused) {
         const canvas = document.getElementById('game-canvas-area');
         const canvasHeight = canvas.offsetHeight;
         const items = document.querySelectorAll('.falling-trash');
-        
+
         items.forEach(el => {
             if (el.dataset.falling === 'true') {
                 let top = parseFloat(el.style.top) || 0;
                 top += gameSpeed;
                 el.style.top = `${top}px`;
-                
+
                 // If it hits bottom (missed)
                 if (top >= canvasHeight - el.offsetHeight) {
                     triggerSplat(el);
@@ -945,7 +945,7 @@ function updatePhysicsLoop() {
             }
         });
     }
-    
+
     gameAnimId = requestAnimationFrame(updatePhysicsLoop);
 }
 
@@ -953,49 +953,49 @@ function endGame(won) {
     isGameActive = false;
     if (gameInterval) clearInterval(gameInterval);
     if (gameAnimId) cancelAnimationFrame(gameAnimId);
-    
+
     // Clear items
     document.getElementById('game-canvas-area').innerHTML = '';
-    
+
     if (won) {
         // Upgrade complete state
         if (currentLevel === playerState.levelCompleted && currentLevel < 5) {
             playerState.levelCompleted = currentLevel + 1;
         }
-        
+
         // Clearance Rewards
         let xpReward = 50;
         let coinsReward = 20;
-        
+
         if (gameLives === 3) {
             playerState.perfectRuns++;
             xpReward += 20; // bonus perfect
             coinsReward += 10;
         }
-        
+
         playerState.xp += xpReward;
         playerState.coins += coinsReward;
         savePlayerState();
         updateProfileUI();
         checkBadges();
-        
+
         // Show feedback won
         document.getElementById('win-xp-reward').textContent = xpReward;
         document.getElementById('win-coins-reward').textContent = coinsReward;
-        
+
         const feedbackText = document.getElementById('win-feedback-text');
         if (gameLives === 3) {
             feedbackText.innerHTML = "✨ <b>SEMPURNA!</b> Kamu menyelamatkan bumi dengan akurasi 100% tanpa ada sampah terlewat! Lilo bangga padamu! 🌿";
         } else {
             feedbackText.textContent = `Hebat! Misi pembersihan Level ${currentLevel} selesai dengan sukses!`;
         }
-        
+
         startConfettiShower();
         showGameScreen('screen-level-won');
     } else {
         showGameScreen('screen-game-over');
     }
-    
+
     // Update next level selection availability
     updateDropdownLevelList();
 }
@@ -1021,15 +1021,15 @@ function updateDropdownLevelList() {
 function initQuizEngine() {
     let currentQuizIdx = 0;
     let quizScore = 0;
-    
+
     const welcomeScreen = document.getElementById('quiz-screen-welcome');
     const playScreen = document.getElementById('quiz-screen-play');
     const resultsScreen = document.getElementById('quiz-screen-results');
-    
+
     const btnStart = document.getElementById('btn-quiz-start');
     const btnNext = document.getElementById('btn-quiz-next');
     const btnRestartResults = document.getElementById('btn-quiz-restart-results');
-    
+
     const progressText = document.getElementById('quiz-progress-text');
     const progressBar = document.getElementById('quiz-progress-bar');
     const questionText = document.getElementById('quiz-question');
@@ -1041,12 +1041,12 @@ function initQuizEngine() {
     const resultScore = document.getElementById('result-score');
     const resultTitle = document.getElementById('result-title');
     const resultDesc = document.getElementById('result-desc');
-    
+
     btnStart.addEventListener('click', () => {
         showQuizScreen(playScreen);
         startQuiz();
     });
-    
+
     btnNext.addEventListener('click', () => {
         currentQuizIdx++;
         if (currentQuizIdx < quizQuestions.length) {
@@ -1055,7 +1055,7 @@ function initQuizEngine() {
             finishQuiz();
         }
     });
-    
+
     btnRestartResults.addEventListener('click', () => {
         showQuizScreen(welcomeScreen);
     });
@@ -1068,24 +1068,24 @@ function initQuizEngine() {
             }
         });
     }
-    
+
     function showQuizScreen(screen) {
         [welcomeScreen, playScreen, resultsScreen].forEach(s => s.classList.remove('active'));
         screen.classList.add('active');
     }
-    
+
     function startQuiz() {
         currentQuizIdx = 0;
         quizScore = 0;
         loadQuizQuestion();
     }
-    
+
     function loadQuizQuestion() {
         const q = quizQuestions[currentQuizIdx];
         progressText.innerText = `Teka-teki ${currentQuizIdx + 1} dari ${quizQuestions.length}`;
         progressBar.style.width = `${(currentQuizIdx / quizQuestions.length) * 100}%`;
         questionText.innerText = q.question;
-        
+
         optionsGrid.innerHTML = '';
         q.options.forEach((opt, idx) => {
             const btn = document.createElement('button');
@@ -1094,16 +1094,16 @@ function initQuizEngine() {
             btn.addEventListener('click', () => selectQuizOption(idx, btn));
             optionsGrid.appendChild(btn);
         });
-        
+
         explanationBox.style.display = 'none';
         btnNext.style.display = 'none';
     }
-    
+
     function selectQuizOption(selectedIdx, btnEl) {
         const q = quizQuestions[currentQuizIdx];
         const buttons = optionsGrid.querySelectorAll('.option-btn');
         buttons.forEach(b => b.setAttribute('disabled', 'true'));
-        
+
         if (selectedIdx === q.correct) {
             btnEl.classList.add('correct');
             quizScore++;
@@ -1114,32 +1114,32 @@ function initQuizEngine() {
             buttons[q.correct].classList.add('correct');
             explanationTitle.innerText = "Wah, Hampir Betul! 💡";
         }
-        
+
         explanationText.innerText = q.explanation;
         explanationBox.style.display = 'block';
-        
+
         btnNext.innerText = currentQuizIdx === quizQuestions.length - 1 ? "Lihat Nilai Akhirmu! 🏆" : "Soal Selanjutnya →";
         btnNext.style.display = 'block';
     }
-    
+
     function finishQuiz() {
         showQuizScreen(resultsScreen);
         progressBar.style.width = '100%';
-        
+
         const pct = Math.round((quizScore / quizQuestions.length) * 100);
         resultScore.innerText = pct;
-        
+
         const offset = 440 - (pct / 100) * 440;
         resultCircle.style.strokeDashoffset = offset;
-        
+
         // Quiz completed rewards
         let quizBonusXp = quizScore * 10;
         let quizBonusCoins = quizScore * 4;
-        
+
         if (pct === 100) {
             resultTitle.innerText = "🏆 Pahlawan Kelestarian Bumi (Sempurna)";
             resultDesc.innerText = "WOW! Kamu menjawab semua teka-teki lingkungan dengan benar. Kamu siap membimbing teman-teman memilah sampah! +50 XP & +20 Koin! 🌿🛡️";
-            
+
             // perfect quiz reward
             quizBonusXp += 20;
             quizBonusCoins += 10;
@@ -1155,7 +1155,7 @@ function initQuizEngine() {
             resultTitle.innerText = "🌱 Anggota Hijau Magang";
             resultDesc.innerText = "Jangan berkecil hati! Yuk ajak Lilo bermain game pemilahan di atas lagi untuk belajar memilah sampah!";
         }
-        
+
         // Apply rewards
         playerState.xp += quizBonusXp;
         playerState.coins += quizBonusCoins;
@@ -1311,25 +1311,25 @@ function initMobileNav() {
     const mobilePanel = document.getElementById('mobile-nav-panel');
     const mobileClose = document.getElementById('mobile-nav-close');
     const mobileLinks = document.querySelectorAll('.mobile-nav-link');
-    
+
     if (!hamburgerBtn || !mobilePanel) return;
-    
+
     const openMenu = () => {
         mobileOverlay.classList.add('active');
         mobilePanel.classList.add('active');
         document.body.style.overflow = 'hidden';
     };
-    
+
     const closeMenu = () => {
         mobileOverlay.classList.remove('active');
         mobilePanel.classList.remove('active');
         document.body.style.overflow = '';
     };
-    
+
     hamburgerBtn.addEventListener('click', openMenu);
     mobileClose.addEventListener('click', closeMenu);
     mobileOverlay.addEventListener('click', closeMenu);
-    
+
     mobileLinks.forEach(link => {
         link.addEventListener('click', () => {
             closeMenu();
@@ -1346,11 +1346,11 @@ function initMobileNav() {
 function initBackToTop() {
     const btn = document.getElementById('btn-back-to-top');
     if (!btn) return;
-    
+
     window.addEventListener('scroll', () => {
         btn.classList.toggle('visible', window.scrollY > 400);
     });
-    
+
     btn.addEventListener('click', () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     });
@@ -1412,7 +1412,7 @@ function playRiverSound(type) {
         const gain = ctx.createGain();
         osc.connect(gain);
         gain.connect(ctx.destination);
-        
+
         const now = ctx.currentTime;
         if (type === 'catch') {
             osc.type = 'sine';
@@ -1572,7 +1572,7 @@ function updateRiverLivesUI() {
 function showRiverScreen(screenId) {
     const startScreen = document.getElementById('screen-river-start');
     const gameoverScreen = document.getElementById('screen-river-gameover');
-    
+
     if (startScreen) {
         startScreen.style.display = (screenId === 'start') ? 'flex' : 'none';
         startScreen.style.opacity = (screenId === 'start') ? '1' : '0';
@@ -1589,7 +1589,7 @@ function resizeRiverCanvas() {
     const canvas = document.getElementById('river-canvas');
     const container = document.getElementById('river-play-area');
     if (!canvas || !container) return;
-    
+
     // Keep canvas drawing resolution at 600x520 but ensure CSS fills container
     canvas.style.width = '100%';
     canvas.style.height = '100%';
@@ -1612,15 +1612,15 @@ function startRiverGame() {
 
     // Hide all overlay screens - show only the canvas
     showRiverScreen('playing');
-    
+
     // Ensure canvas is properly sized
     resizeRiverCanvas();
 
     updateRiverLiloImage();
     playRiverSound('start');
-    
+
     isRiverActive = true;
-    
+
     if (riverAnimId) cancelAnimationFrame(riverAnimId);
     riverAnimId = requestAnimationFrame(riverGameLoop);
 }
@@ -1654,7 +1654,7 @@ function endRiverGame() {
 
     // Draw one final frame so the game background is visible behind gameover
     drawRiverGame();
-    
+
     // Show the gameover screen
     showRiverScreen('gameover');
 }
@@ -1693,7 +1693,7 @@ function updateRiverGame(timestamp) {
         if (dist < (t.radius + 35)) {
             riverScore++;
             document.getElementById('river-score').textContent = riverScore.toString();
-            
+
             spawnRiverCatchParticles(t.x, t.y);
             spawnRiverFloatingText(t.x, t.y - 12, "+1", "#22c55e");
             playRiverSound('catch');
@@ -1706,7 +1706,7 @@ function updateRiverGame(timestamp) {
         if (t.y > 470) {
             riverLives--;
             updateRiverLivesUI();
-            
+
             spawnRiverSplashParticles(t.x, 470);
             spawnRiverFloatingText(t.x, 440, "Lolos! 💔", "#ef4444");
             playRiverSound('miss');
@@ -1951,7 +1951,7 @@ function drawRiverParticles(ctx) {
     for (let p of riverParticles) {
         ctx.save();
         ctx.globalAlpha = Math.max(0, p.life);
-        
+
         if (p.type === 'star') {
             ctx.fillStyle = p.color;
             ctx.beginPath();
@@ -2185,36 +2185,87 @@ const learningMaterials = [
                 <p style="font-size: 0.95rem; color: var(--text-muted);">Dipublikasikan oleh Tim EcoLearn • Membaca Interaktif untuk Anak-Anak & Remaja</p>
             </div>
 
-            <p class="reader-paragraph">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia odio vitae vestibulum vestibulum. Cras venenatis euismod malesuada. Sampah di sekitar kita bukanlah sekadar limbah buangan, melainkan sumber daya yang bisa dimanfaatkan kembali jika dipilah dengan benar!</p>
+            <p class="reader-paragraph">Memilah sampah dari rumah adalah langkah pertama untuk menjaga bumi tetap hijau. Sampah yang dikelola dengan benar bukan sekadar limbah buangan, melainkan sumber daya yang dapat dimanfaatkan kembali dan didaur ulang.
+
+standard umum di Indonesia dan secara internasional sering menggunakan 5 warna tempat sampah untuk membedakan jenis limbah:</p>
 
             <h3 class="reader-heading-2"><span>🟢</span> 1. Tempat Sampah Hijau (Organik)</h3>
-            <p class="reader-paragraph">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Tong hijau diperuntukkan bagi sisa makanan, kulit buah, sisa sayuran, dan daun kering. Bahan-bahan ini bersifat alami dan mudah terurai kembali menjadi pupuk organik yang menyuburkan tanaman.</p>
+            <p class="reader-paragraph">
+            <li>
+            Jenis Sampah: Sisa makanan, kulit buah, sisa sayuran, dedaunan kering, dan sisa tulang/daging.
+            </li>
+            <li>
+            Sifat: Alami dan mudah terurai secara hayati (biodegradable).
+            </li>
+            <li>
+            Pengolahan: Dikomposkan menjadi pupuk organik untuk menyuburkan tanah dan tanaman.</p>
+            </li>
 
             <div class="reader-callout fact">
                 <strong>💡 Fakta Unik Eco:</strong>
-                Lorem ipsum dolor sit amet. Sampah organik yang diolah menjadi pupuk kompos dapat berkontribusi mengurangi emisi gas metana hingga 45% dari tempat pembuangan akhir!
-            </div>
+                Memilah sampah organik untuk dikomposkan dapat mengurangi emisi gas metana (gas rumah kaca pembawa pemanasan global) dari TPA secara signifikan.</div>
 
-            <h3 class="reader-heading-2"><span>🔵</span> 2. Tempat Sampah Biru (Plastik & Anorganik)</h3>
-            <p class="reader-paragraph">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris. Botol kemasan, gelas plastik, dan wadah sintetis dibuang di sini agar dapat dicacah dan didaur ulang menjadi barang bermanfaat kembali.</p>
+            <h3 class="reader-heading-2"><span>🟡</span> 2. Tempat Sampah Kuning (Plastik & Anorganik)</h3>
+            <p class="reader-paragraph">
+            <li>
+            Jenis Sampah: Botol plastik, kemasan makanan plastik, gelas plastik, kantong plastik (kresek), dan sedotan.
+            </li>
+<li>
+Sifat: Anorganik dan sulit terurai, tetapi berpotensi tinggi untuk didaur ulang.
+</li>
+<li>
+Pengolahan: Dicacah dan dilelehkan kembali menjadi biji plastik untuk dijadikan barang baru.</p>
+</li>
 
-            <h3 class="reader-heading-2"><span>🔴</span> 3. Tempat Sampah Merah (B3 & Residu Berbahaya)</h3>
-            <p class="reader-paragraph">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum. Baterai bekas, obat kadaluarsa, dan racun serangga termasuk dalam golongan ini karena mengandung racun berbahaya.</p>
 
+            <h3 class="reader-heading-2"><span>🔵</span> 3. Tempat Sampah Biru — Kertas & Kardus </h3>
+            <p class="reader-paragraph">
+            <li>
+            Jenis Sampah: Kertas bekas, majalah, koran, dus karton, kardus makanan, dan kertas cetak.
+            </li>
+<li>
+Sifat: Mudah hancur jika terkena air dan dapat didaur ulang menjadi kertas baru.
+</li>
+<div class="reader-callout fact">
+                <strong>⚠️ Catatan:</strong>
+                Pastikan kertas dalam keadaan kering dan tidak tercampur cairan atau minyak sisa makanan.</div>
+
+
+<h3 class="reader-heading-2"><span>🔴</span> 4. Tempat Sampah Merah — B3 (Bahan Berbahaya & Beracun) </h3>
+            <p class="reader-paragraph">
+            <li>
+            Jenis Sampah: Baterai bekas, lampu neon/bohlam bekas, kemasan racun serangga, obat kedaluwarsa, dan limbah elektronik kecil.
+            </li>
+<li>
+Sifat: Mengandung bahan kimia beracun, korosif, atau mudah terbakar.
+</li>
             <div class="reader-callout warning">
                 <strong>⚠️ Peringatan Penting Lilo:</strong>
-                Jangan membuang baterai bekas ke tempat sampah hijau atau biru ya! Cairan kimia baterai bisa meracuni tanah dan air bersih kita!
-            </div>
+                Jangan pernah mencampur sampah B3 dengan sampah organik atau plastik! Cairan kimia dari B3 dapat meresap ke dalam tanah dan meracuni sumber air bersih.</div>
+
+<h3 class="reader-heading-2"><span>🔘</span>5. Tempat Sampah Abu-Abu / Hitam — Residu (Non-Daur Ulang)</h3>
+            <p class="reader-paragraph">
+            <li>
+            Jenis Sampah: Popok sekali pakai, pembalut wanita, tisu bekas pakai, sterofoam, puntung rokok, dan pecahan keramik.</li>
+<li>
+Sifat: Sampah yang sangat sulit/tidak dapat didaur ulang dan berisiko membawa kuman/penyakit.</li>
+<li>
+Pengolahan: Langsung dibuang ke Tempat Pemrosesan Akhir (TPA) untuk dimusnahkan dengan aman.</li>
+
 
             <h3 class="reader-heading-2"><span>📌</span> Rangkuman Poin Penting</h3>
             <div class="reader-accordion-item">
                 <div class="reader-accordion-header" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? 'block' : 'none'">
-                    <span>Mengapa kita wajib memilah sampah dari rumah?</span>
+                    <span>Mengapa Kita Wajib Memilah Sampah dari Rumah?</span>
                     <span>▼</span>
                 </div>
                 <div class="reader-accordion-body" style="display: block;">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Dengan memilah sampah dari awal, kita memudahkan petugas daur ulang dan mencegah pencemaran tanah serta lautan.
-                </div>
+                    <ol>
+                    <li>Memudahkan Proses Daur Ulang: Petugas tidak perlu menghabiskan waktu memisahkan sampah yang kotor dan tercampur.</li>
+                    <li>Mencegah Pencemaran Lingkungan: Mencegah racun kimia B3 meresap ke tanah dan mengurangi limbah plastik berlayar ke lautan.</li>
+                    <li>Mengurangi Beban TPA: Sampah organik dan plastik daur ulang tidak akan menumpuk di TPA.</li>
+                    <li>Ekonomi Sirkular: Sampah daur ulang memiliki nilai ekonomis yang dapat dimanfaatkan kembali.</li>
+                    </ol></div>
             </div>
         `,
         quiz: {
@@ -2252,18 +2303,35 @@ const learningMaterials = [
                 <p style="font-size: 0.95rem; color: var(--text-muted);">Dipublikasikan oleh Tim EcoLearn • Membaca Interaktif untuk Anak-Anak & Remaja</p>
             </div>
 
-            <p class="reader-paragraph">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Ketika seseorang membuang kantong plastik atau botol minuman sembarangan di tepi jalan, hujan deras akan menyapu plastik tersebut ke dalam saluran air (drainase).</p>
+            <p class="reader-paragraph">Banyak orang mengira sampah plastik yang dibuang di jalanan tidak akan berdampak jauh. Padahal, akibat gaya gravitasi dan aliran air, plastik memiliki perjalanan panjang yang berujung pada kerusakan ekosistem laut.</p>
 
             <h3 class="reader-heading-2"><span>💧</span> 1. Dari Got Bermuara ke Sungai Utama</h3>
-            <p class="reader-paragraph">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Air sungai berarus membawa plastik terus mengalir melewati pemukiman dan perkotaan. Sampah plastik ini terombang-ambing dan merusak keindahan ekosistem sungai.</p>
+            <p class="reader-paragraph">Ketika seseorang membuang sampah sembarangan—seperti kantong plastik, botol minuman, atau bungkus makanan—di tepi jalan:</p>
+            <li>
+            Sapuan Air Hujan: Hujan deras akan menyapu dan membawa sampah tersebut masuk ke dalam saluran air (got/drainase).
+            </li>
+            <li>
+            Aliran Sungai: Dari got, plastik terbawa menuju sungai utama yang melintasi pemukiman dan perkotaan.
+            </li>
+            <li>
+            Kerusakan Ekosistem: Sampah terombang-ambing di sungai, merusak pemandangan, menyumbat aliran air (penyebab banjir), dan mencemari kehidupan makhluk hidup air tawar.
+            </li>
 
             <div class="reader-callout fact">
                 <strong>🌊 Tahukah Kamu?</strong>
-                Lorem ipsum dolor sit amet. Sekitar 80% sampah plastik yang berada di samudra samudra luas berasal dari daratan yang terbawa oleh aliran sungai!
-            </div>
+                Sekitar 80% sampah plastik yang ada di laut luas sebenarnya berasal dari daratan yang terbawa oleh aliran sungai!</div>
 
             <h3 class="reader-heading-2"><span>🐢</span> 2. Bahaya Mikroplastik Bagi Satwa Laut</h3>
-            <p class="reader-paragraph">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sagittis ipsum. Praesent mauris. Di laut, paparan sinar matahari dan ombak memecah plastik besar menjadi serpihan kecil yang dinamakan <i>mikroplastik</i>. Penyu dan ikan sering terkecoh mengira kantong plastik transparan sebagai ubur-ubur makanan mereka.</p>
+            <p class="reader-paragraph">Saat sungai bermuara ke laut, petualangan berbahaya plastik baru saja dimulai:</p>
+            <li>
+            Pembentukan Mikroplastik: Paparan sinar matahari (sinar UV) dan hantaman ombak laut secara terus-menerus memecah plastik berukuran besar menjadi serpihan-serpihan mikroskopis yang disebut mikroplastik.</li>
+            <b>
+            Ancaman Bagi Satwa Laut:
+            </b>
+            <li>
+            Kura-kura & Penyu: Sering kali mengira kantong plastik transparan yang mengapung sebagai ubur-ubur (makanan kesukaan mereka).</li>
+            <li>
+            Ikan & Burung Laut: Memakan mikroplastik karena ukurannya yang menyerupai plankton. Plastik yang tertelan dapat menyumbat pencernaan dan menyebabkan kematian akibat racun kimia.</li>
 
             <div class="reader-callout tip">
                 <strong>🌿 Aksi Sederhana Penyelamat Laut:</strong>
@@ -2916,7 +2984,7 @@ document.addEventListener('DOMContentLoaded', () => {
     renderAllMascots();
     updateProfileUI();
     checkBadges();
-    
+
     initScrollEffects();
 
     initCostumeShop();
